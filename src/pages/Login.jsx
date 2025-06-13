@@ -73,7 +73,7 @@ const Login = () => {
             </div>
           </div>
           <h2 className="text-3xl font-bold text-gray-900">Welcome Back</h2>
-          <p className="mt-2 text-gray-600">Sign in to your AgriMarket account</p>
+          <p className="mt-2 text-gray-600">Sign in to your AgriMart account</p>
         </div>
         
         <div className="bg-white rounded-xl shadow-lg p-8">
@@ -134,10 +134,12 @@ const Login = () => {
             <button
               type="submit"
               disabled={loading}
+              
               className="w-full bg-green-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? 'Signing In...' : 'Sign In'}
+              {loading ? 'Signing In... And Its make some time pls Wait..' : 'Sign In'}
             </button>
+            
           </form>
 
           <div className="mt-6 text-center">
@@ -152,29 +154,7 @@ const Login = () => {
             </p>
           </div>
 
-          {/* Demo Accounts */}
-          <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-            <h3 className="text-sm font-medium text-gray-700 mb-3">Quick Demo Login:</h3>
-            <div className="space-y-2">
-              <button
-                onClick={() => handleDemoLogin('admin@agrimarket.com', 'admin123')}
-                disabled={loading}
-                className="w-full text-left px-3 py-2 text-xs bg-blue-100 text-blue-800 rounded hover:bg-blue-200 transition-colors disabled:opacity-50"
-              >
-                <strong>Admin:</strong> admin@agrimarket.com / admin123
-              </button>
-              <button
-                onClick={() => handleDemoLogin('user@agrimarket.com', 'user123')}
-                disabled={loading}
-                className="w-full text-left px-3 py-2 text-xs bg-green-100 text-green-800 rounded hover:bg-green-200 transition-colors disabled:opacity-50"
-              >
-                <strong>User:</strong> user@agrimarket.com / user123
-              </button>
-            </div>
-            <p className="text-xs text-gray-500 mt-2">
-              Note: These are demo accounts. You'll need to create them first or use your own credentials.
-            </p>
-          </div>
+         
         </div>
       </div>
     </div>

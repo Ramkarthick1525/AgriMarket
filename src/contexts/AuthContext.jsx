@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }) => {
     });
 
     return unsubscribe;
-  }, []);
+  }, [10]);
 
   const login = async (email, password) => {
     try {

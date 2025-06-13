@@ -11,6 +11,14 @@ import {
   Sprout
 } from 'lucide-react';
 
+// Add new nav links for Services, About Us, Contact Us
+const navLinks = [
+  { name: 'Home', path: '/' },
+  { name: 'Services', path: '/services' },
+  { name: 'About Us', path: '/about' },
+  { name: 'Contact Us', path: '/contact' }
+];
+
 const Navbar = () => {
   const { user, userRole, logout, isAdmin } = useAuth();
   const navigate = useNavigate();
@@ -28,9 +36,10 @@ const Navbar = () => {
 
   const categories = [
     { name: 'Seeds & Fertilizers', path: '/category/seeds-fertilizers' },
-    { name: 'Fresh Produce', path: '/category/fresh-produce' },
+    { name: 'Vegetables', path: '/category/fresh-produce' },
+    { name: 'Fruits', path: '/category/fresh-produce' },
     { name: 'Machinery', path: '/category/machinery' },
-    { name: 'Livestock Supplies', path: '/category/livestock' }
+    { name: 'Dairy', path: '/category/livestock' }
   ];
 
   return (
@@ -38,27 +47,59 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
+          {isAdmin ||(
           <Link to="/" className="flex items-center space-x-2">
             <Sprout className="h-8 w-8 text-green-300" />
-            <span className="text-white text-xl font-bold">AgriMarket</span>
+            <span className="text-white text-xl font-bold">AgriMart</span>
+          </Link>)}
+          <>
+          <Link to="/" className="flex items-center space-x-2">
+            <Sprout className="h-8 w-8 text-green-300" />
+            <span className="text-white text-xl font-bold">AgriMart</span>
           </Link>
+          </>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
+            {isAdmin ||(
             <Link 
               to="/" 
               className="text-white hover:text-green-300 transition-colors duration-200"
             >
               Home
-            </Link>
-            
+            </Link>)
+}
+            {isAdmin ||(
+            <Link 
+              to="/services" 
+              className="text-white hover:text-green-300 transition-colors duration-200"
+            >
+              Services
+            </Link>)}
+            {isAdmin ||(
+            <Link
+              to="/about"
+              className="text-white hover:text-green-300 transition-colors duration-200"
+            >
+              About Us
+            </Link>)}
+            {isAdmin ||(
+            <Link
+              to="/contact"
+              className="text-white hover:text-green-300 transition-colors duration-200"
+            >
+              Contact Us
+            </Link>)}
+            {/* Add Nav Links */}
             {/* Categories Dropdown */}
+            {isAdmin ||(
             <div className="relative group">
               <button className="text-white hover:text-green-300 transition-colors duration-200">
                 Categories
               </button>
               <div className="absolute top-full left-0 mt-1 w-48 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
                 {categories.map((category) => (
+                  
                   <Link
                     key={category.path}
                     to={category.path}
@@ -68,7 +109,7 @@ const Navbar = () => {
                   </Link>
                 ))}
               </div>
-            </div>
+            </div>)}
 
             {isAdmin && (
               <Link 

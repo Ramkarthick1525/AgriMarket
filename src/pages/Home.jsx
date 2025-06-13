@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Sprout, Truck, Shield, Star, ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import { ShieldCheck } from 'lucide-react';
 
 const Home = () => {
   const [featuredProducts, setFeaturedProducts] = useState([]);
+  const { user, userRole, logout, isAdmin } = useAuth();
 
   const categories = [
     {
@@ -64,8 +68,11 @@ const Home = () => {
   ];
 
   return (
+    
     <div className="min-h-screen">
       {/* Hero Section */}
+    
+      {isAdmin ||(
       <section className="bg-gradient-to-r from-green-800 to-green-600 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="text-center">
@@ -88,9 +95,10 @@ const Home = () => {
             </Link>
           </div>
         </div>
-      </section>
+      </section>)}
 
       {/* Categories Section */}
+      { isAdmin ||(
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
@@ -128,14 +136,43 @@ const Home = () => {
             ))}
           </div>
         </div>
-      </section>
+      </section>)}
+      {/* Only see on Admin Pannel */}
+      { isAdmin && (
+        <>
+         <section className="min-h-[80vh] flex items-center justify-center bg-gradient-to-r from-green-800 to-green-600 px-4">
+      <div className="bg-white p-10 rounded-2xl shadow-2xl max-w-3xl w-full text-center">
+        <div className="flex justify-center mb-4">
+          <ShieldCheck className="h-12 w-12 text-green-700" />
+        </div>
+
+        <h1 className="text-4xl font-bold text-green-800 mb-4">
+          Welcome  {user?.displayName || 'Admin'} !
+        </h1>
+
+        <p className="text-gray-600 text-lg mb-6">
+          You now have full control of the AgriMart dashboard. Use the admin panel to manage products, view orders, and keep things running smoothly.
+        </p>
+
+        <Link
+          to="/admin"
+          className="inline-block bg-green-700 text-white px-6 py-3 rounded-lg font-medium text-lg shadow hover:bg-green-800 transition-all duration-300"
+        >
+          Go to Admin Panel
+        </Link>
+      </div>
+    </section>
+      
+        </>
+      )}
 
       {/* Features Section */}
+      { isAdmin ||(
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Why Choose AgriMarket?
+              Why Choose AgriMart?
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               We're committed to supporting farmers with quality products and exceptional service
@@ -161,16 +198,17 @@ const Home = () => {
             ))}
           </div>
         </div>
-      </section>
+      </section>)}
 
       {/* CTA Section */}
+      { isAdmin || (
       <section className="bg-green-700 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             Ready to Get Started?
           </h2>
           <p className="text-xl mb-8 text-green-100">
-            Join thousands of farmers who trust AgriMarket for their agricultural needs
+            Join thousands of farmers who trust AgriMart for their agricultural needs
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
@@ -187,9 +225,9 @@ const Home = () => {
             </Link>
           </div>
         </div>
-      </section>
+      </section>)}
     </div>
-  );
+    );
 };
 
 export default Home;
