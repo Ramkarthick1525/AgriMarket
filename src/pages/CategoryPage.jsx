@@ -114,6 +114,16 @@ const CategoryPage = () => {
         category: 'machinery',
         inStock: true,
         rating: 4.3
+      },
+      {
+        id: '8',
+        name: 'Tree cutter',
+        price: 299.99,
+        description: 'Heavy-duty garden tiller for soil preparation',
+        image: 'https://images.pexels.com/photos/1595108/pexels-photo-1595108.jpeg?auto=compress&cs=tinysrgb&w=400',
+        category: 'machinery',
+        inStock: true,
+        rating: 5
       }
     ],
     'livestock': [

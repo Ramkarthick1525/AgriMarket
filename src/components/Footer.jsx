@@ -10,7 +10,7 @@ const Footer = () => {
           <div>
             <div className="flex items-center space-x-2 mb-4">
               <Sprout className="h-8 w-8 text-green-300" />
-              <span className="text-xl font-bold">AgriMarket</span>
+              <span className="text-xl font-bold">AgriMart</span>
             </div>
             <p className="text-green-200 mb-4">
               Your trusted partner for all agricultural needs. Quality products, 
@@ -24,9 +24,12 @@ const Footer = () => {
             <ul className="space-y-2">
               <li><a href="/" className="text-green-200 hover:text-white transition-colors">Home</a></li>
               <li><a href="/category/seeds-fertilizers" className="text-green-200 hover:text-white transition-colors">Seeds & Fertilizers</a></li>
-              <li><a href="/category/fresh-produce" className="text-green-200 hover:text-white transition-colors">Fresh Produce</a></li>
+              <li><a href="/category/fresh-produce" className="text-green-200 hover:text-white transition-colors">Vegetables</a></li>
+              <li><a href="/category/machinery" className="text-green-200 hover:text-white transition-colors">Fruits</a></li>
+              <li><a href="/category/livestock" className="text-green-200 hover:text-white transition-colors">Dairy </a></li>
               <li><a href="/category/machinery" className="text-green-200 hover:text-white transition-colors">Machinery</a></li>
-              <li><a href="/category/livestock" className="text-green-200 hover:text-white transition-colors">Livestock Supplies</a></li>
+              
+
             </ul>
           </div>
 
@@ -47,15 +50,16 @@ const Footer = () => {
             <div className="space-y-3">
               <div className="flex items-center space-x-2">
                 <Phone className="h-4 w-4 text-green-300" />
-                <span className="text-green-200">+1 (555) 123-4567</span>
+                <span className="text-green-200">+91 98765 43210</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Mail className="h-4 w-4 text-green-300" />
-                <span className="text-green-200">info@agrimarket.com</span>
+                <span className="text-green-200">support@agrimart.in</span>
               </div>
               <div className="flex items-center space-x-2">
                 <MapPin className="h-4 w-4 text-green-300" />
-                <span className="text-green-200">123 Farm Road, Agriculture City</span>
+                <span className="text-green-200">AgriMart HQ
+                123 Green Lane, Coimbatore, Tamil Nadu, India</span>
               </div>
             </div>
           </div>
@@ -63,7 +67,7 @@ const Footer = () => {
 
         <div className="border-t border-green-800 mt-8 pt-8 text-center">
           <p className="text-green-200">
-            © 2024 AgriMarket. All rights reserved. | Built for agricultural excellence.
+            © 2024 AgriMart. All rights reserved. | Built for agricultural excellence.
           </p>
         </div>
       </div>

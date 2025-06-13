@@ -65,7 +65,7 @@ const Register = () => {
             </div>
           </div>
           <h2 className="text-3xl font-bold text-gray-900">Create Account</h2>
-          <p className="mt-2 text-gray-600">Join AgriMarket today</p>
+          <p className="mt-2 text-gray-600">Join AgriMart today</p>
         </div>
         
         <div className="bg-white rounded-xl shadow-lg p-8">
@@ -197,7 +197,7 @@ const Register = () => {
               disabled={loading}
               className="w-full bg-green-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? 'Creating Account...' : 'Create Account'}
+              {loading ? 'Creating Account.. It take sometime pls Wait..' : 'Create Account'}
             </button>
           </form>
 

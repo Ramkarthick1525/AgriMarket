@@ -10,7 +10,9 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import CategoryPage from './pages/CategoryPage';
 import AdminPanel from './pages/AdminPanel';
-
+import Services from './pages/services';
+import AboutUs from './pages/Aboutus'; // Assuming you have an AboutUs page
+import Contact from './pages/ContactUs'; // Assuming you have a Contact page
 function App() {
   return (
     <AuthProvider>
@@ -21,6 +23,9 @@ function App() {
           <main className="flex-1">
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/services" element={<Services />} />
+              <Route path="/about" element={<AboutUs />} />
+              <Route path="/contact" element={<Contact />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/category/:category" element={<CategoryPage />} />
