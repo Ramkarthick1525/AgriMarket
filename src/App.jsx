@@ -13,6 +13,8 @@ import AdminPanel from './pages/AdminPanel';
 import Services from './pages/services';
 import AboutUs from './pages/Aboutus'; // Assuming you have an AboutUs page
 import Contact from './pages/ContactUs'; // Assuming you have a Contact page
+import Profile from './pages/Profile'; // ⬅️ Add at top
+
 function App() {
   return (
     <AuthProvider>
@@ -29,6 +31,8 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/category/:category" element={<CategoryPage />} />
+              <Route path="/profile" element={<Profile />} />
+
               <Route 
                 path="/admin" 
                 element={

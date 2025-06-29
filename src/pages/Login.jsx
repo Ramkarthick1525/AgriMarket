@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../contexts/AuthContext'; // ✅ Make sure this path is correct
 import { Mail, Lock, Eye, EyeOff, Sprout } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -11,60 +11,53 @@ const Login = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  
-  const { login } = useAuth();
+
+  const { login } = useAuth(); // ✅ This must be here
   const navigate = useNavigate();
 
+
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
+
+  if (!formData.email || !formData.password) {
+    toast.error('Please fill in all fields');
+    return;
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(formData.email)) {
+    toast.error('Please enter a valid email address');
+    return;
+  }
+
+  setLoading(true);
+  try {
+    const loggedInUser = await login(formData.email.trim(), formData.password);
     
-    if (!formData.email || !formData.password) {
-      toast.error('Please fill in all fields');
-      return;
-    }
+    
 
-    // Basic email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
-      toast.error('Please enter a valid email address');
-      return;
-    }
 
-    setLoading(true);
-    try {
-      await login(formData.email.trim(), formData.password);
-      navigate('/');
-    } catch (error) {
-      console.error('Login error:', error);
-      // Error message is already handled in the login function
-    } finally {
-      setLoading(false);
-    }
-  };
+if (loggedInUser.role === 'admin') {
+  navigate('/admin');
+} else {
+  navigate('/');
+}
 
-  // Quick login function for demo accounts
-  const handleDemoLogin = async (email, password) => {
-    setFormData({ email, password });
-    setLoading(true);
-    try {
-      await login(email, password);
-      navigate('/');
-    } catch (error) {
-      console.error('Demo login error:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+
+  } catch (error) {
+    console.error('Login error:', error);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center px-4">
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
           <div className="flex justify-center mb-4">
@@ -75,7 +68,7 @@ const Login = () => {
           <h2 className="text-3xl font-bold text-gray-900">Welcome Back</h2>
           <p className="mt-2 text-gray-600">Sign in to your AgriMart account</p>
         </div>
-        
+
         <div className="bg-white rounded-xl shadow-lg p-8">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
@@ -133,28 +126,24 @@ const Login = () => {
 
             <button
               type="submit"
+              className="w-full bg-green-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-green-700 transition disabled:opacity-50"
               disabled={loading}
-              
-              className="w-full bg-green-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? 'Signing In... And Its make some time pls Wait..' : 'Sign In'}
+              {loading ? 'Signing in… Please wait' : 'Sign In'}
             </button>
-            
           </form>
 
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
-              Don't have an account?{' '}
+              Don’t have an account?{' '}
               <Link
                 to="/register"
-                className="font-medium text-green-600 hover:text-green-500 transition-colors"
+                className="font-medium text-green-600 hover:text-green-500"
               >
                 Sign up here
               </Link>
             </p>
           </div>
-
-         
         </div>
       </div>
     </div>
