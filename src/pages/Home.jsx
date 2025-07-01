@@ -14,31 +14,32 @@ const Home = () => {
       name: 'Seeds & Fertilizers',
       path: '/category/seeds-fertilizers',
       description: 'High-quality seeds and organic fertilizers for better yields',
-      image: 'https://images.pexels.com/photos/416978/pexels-photo-416978.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop',
+      image: 'https://cdn.pixabay.com/photo/2015/05/14/02/22/soil-766281_1280.jpg',
       bgColor: 'bg-green-100',
       textColor: 'text-green-800'
     },
     {
-      name: 'Fresh Produce',
+      name: 'Vegetables',
       path: '/category/fresh-produce',
       description: 'Farm-fresh fruits and vegetables delivered to your door',
-      image: 'https://images.pexels.com/photos/1300972/pexels-photo-1300972.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop',
+      image: 'https://static.toiimg.com/thumb/msid-121897288,width-1280,height-720,resizemode-4/121897288.jpg',
       bgColor: 'bg-orange-100',
       textColor: 'text-orange-800'
     },
     {
-      name: 'Agricultural Machinery',
+      name: ' Machinery',
       path: '/category/machinery',
       description: 'Modern farming equipment and tools for efficient agriculture',
-      image: 'https://images.pexels.com/photos/2886596/pexels-photo-2886596.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop',
+      image: 'https://i.pinimg.com/736x/15/30/b9/1530b944fe11198892b63ab5fe9371be.jpg',
       bgColor: 'bg-blue-100',
       textColor: 'text-blue-800'
     },
+    
     {
-      name: 'Livestock Supplies',
-      path: '/category/livestock',
+      name: 'Fruits',
+      path: '/category/fruits',
       description: 'Everything you need for healthy and productive livestock',
-      image: 'https://images.pexels.com/photos/422220/pexels-photo-422220.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop',
+      image: 'https://i.pinimg.com/736x/c2/a5/03/c2a5035df9bad2990471306b6d1a2a4f.jpg',
       bgColor: 'bg-amber-100',
       textColor: 'text-amber-800'
     }
@@ -211,12 +212,7 @@ const Home = () => {
             Join thousands of farmers who trust AgriMart for their agricultural needs
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/register"
-              className="inline-flex items-center bg-white text-green-700 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-green-50 transition-all duration-300"
-            >
-              Create Account
-            </Link>
+            
             <Link
               to="/category/seeds-fertilizers"
               className="inline-flex items-center border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-green-700 transition-all duration-300"

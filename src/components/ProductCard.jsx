@@ -8,22 +8,31 @@ const ProductCard = ({ product }) => {
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleAddToCart = async (e) => {
-    e.preventDefault();
-    
-    if (!user) {
-      toast.error('Please login to add items to cart');
-      return;
-    }
+  const handleAddToCart = (e) => {
+  e.preventDefault();
 
-    setLoading(true);
-    
-    // Simulate adding to cart
-    setTimeout(() => {
-      toast.success(`${product.name} added to cart!`);
-      setLoading(false);
-    }, 500);
-  };
+  if (!user) {
+    toast.error('Please login to add items to cart');
+    return;
+  }
+
+  const userEmail = user.email;
+  const cartKey = `cart_${userEmail}`;
+  const existingCart = JSON.parse(localStorage.getItem(cartKey)) || [];
+
+  // Check if item is already in cart
+  const alreadyInCart = existingCart.some(item => item.id === product.id);
+  if (alreadyInCart) {
+    toast.error('Product already in cart!');
+    return;
+  }
+
+  const updatedCart = [...existingCart, { ...product, cartQuantity: 1 }];
+  localStorage.setItem(cartKey, JSON.stringify(updatedCart));
+
+  toast.success(`${product.name} added to cart!`);
+};
+
 
   const handleWishlist = (e) => {
     e.preventDefault();
@@ -77,7 +86,7 @@ const ProductCard = ({ product }) => {
         </button>
 
         {/* Stock Status */}
-        {!product.inStock && (
+        {Number(product.quantity) <= 0 && (
           <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
             <span className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
               Out of Stock
@@ -96,25 +105,19 @@ const ProductCard = ({ product }) => {
           {product.description}
         </p>
 
-        {/* Rating */}
-        <div className="flex items-center mb-3">
-          <div className="flex space-x-1">
-            {renderStars(product.rating)}
-          </div>
-          <span className="text-sm text-gray-500 ml-2">
-            ({product.rating})
-          </span>
-        </div>
+        
 
         {/* Price and Actions */}
         <div className="flex items-center justify-between">
           <span className="text-2xl font-bold text-green-600">
-            ${product.price.toFixed(2)}
+            ₹{Number(product.price).toFixed(2)}
+
           </span>
           
           <button
             onClick={handleAddToCart}
-            disabled={!product.inStock || loading}
+            disabled={Number(product.quantity) <= 0}
+
             className="flex items-center space-x-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <ShoppingCart className="h-4 w-4" />

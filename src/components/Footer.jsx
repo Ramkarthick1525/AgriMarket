@@ -25,7 +25,7 @@ const Footer = () => {
               <li><a href="/" className="text-green-200 hover:text-white transition-colors">Home</a></li>
               <li><a href="/category/seeds-fertilizers" className="text-green-200 hover:text-white transition-colors">Seeds & Fertilizers</a></li>
               <li><a href="/category/fresh-produce" className="text-green-200 hover:text-white transition-colors">Vegetables</a></li>
-              <li><a href="/category/machinery" className="text-green-200 hover:text-white transition-colors">Fruits</a></li>
+              <li><a href="/category/fruits" className="text-green-200 hover:text-white transition-colors">Fruits</a></li>
               <li><a href="/category/livestock" className="text-green-200 hover:text-white transition-colors">Dairy </a></li>
               <li><a href="/category/machinery" className="text-green-200 hover:text-white transition-colors">Machinery</a></li>
               

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import {
@@ -11,11 +11,28 @@ import {
   Sprout
 } from 'lucide-react';
 
+
+
 const Navbar = () => {
   const { user, userRole, logout, isAdmin } = useAuth();
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const profileRef = useRef(null);
+
+  useEffect(() => {
+  const handleClickOutside = (event) => {
+    if (profileRef.current && !profileRef.current.contains(event.target)) {
+      setIsProfileOpen(false);
+    }
+  };
+
+  document.addEventListener('mousedown', handleClickOutside);
+
+  return () => {
+    document.removeEventListener('mousedown', handleClickOutside);
+  };
+}, []);
 
   const handleLogout = async () => {
     try {
@@ -29,7 +46,7 @@ const Navbar = () => {
   const categories = [
     { name: 'Seeds & Fertilizers', path: '/category/seeds-fertilizers' },
     { name: 'Vegetables', path: '/category/fresh-produce' },
-    { name: 'Fruits', path: '/category/fresh-produce' },
+    { name: 'Fruits', path: '/category/fruits' },
     { name: 'Machinery', path: '/category/machinery' },
     { name: 'Dairy', path: '/category/livestock' }
   ];
@@ -82,7 +99,8 @@ const Navbar = () => {
           {/* User Menu */}
           <div className="flex items-center space-x-4">
             {user ? (
-              <div className="relative">
+              <div className="relative" ref={profileRef}>
+
                 <button
                   onClick={() => setIsProfileOpen(!isProfileOpen)}
                   className="flex items-center space-x-2 text-white hover:text-green-300"
@@ -112,12 +130,12 @@ const Navbar = () => {
     {/* Only for user */}
     {!isAdmin && (
       <Link
-        to="/orders"
+        to="/Cart"
         className="flex items-center px-4 py-2 text-gray-800 hover:bg-green-50 hover:text-green-800"
         onClick={() => setIsProfileOpen(false)}
       >
         <ShoppingCart className="h-4 w-4 mr-2" />
-        My Orders
+        Cart
       </Link>
     )}
 
