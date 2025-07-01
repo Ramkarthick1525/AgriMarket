@@ -30,13 +30,18 @@ const Profile = () => {
 
           {user?.role === 'admin' && (
             <>
-              <p><strong>Mobile Number:</strong> {user?.mobile || 'N/A'}</p>
-              <p><strong>Marketing Info:</strong> {user?.marketInfo || 'N/A'}</p>
+              <p><strong>Mobile Number:</strong> { '90423 94728'}</p>
+              <p><strong>Market Info:</strong> { 'Local Market'}</p>
             </>
           )}
         </div>
 
-        
+        <button
+          onClick={handleLogout}
+          className="mt-6 w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg font-semibold transition"
+        >
+          Logout
+        </button>
       </div>
     </div>
   );

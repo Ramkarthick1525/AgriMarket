@@ -23,7 +23,22 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
+  // ✅ Admin login (hardcoded)
   const login = async (email, password) => {
+    if (email === 'tamilvaanan2004@gmail.com' && password === 'admin@123') {
+      const adminUser = {
+        name: "Admin",
+        email,
+        role: "admin",
+        
+      };
+      localStorage.setItem("loggedInUser", JSON.stringify(adminUser));
+      setUser(adminUser);
+      toast.success("Logged in as Admin");
+      return adminUser;
+    }
+
+    // ✅ Normal user login
     const users = JSON.parse(localStorage.getItem("users")) || [];
     const foundUser = users.find(
       (user) => user.email === email && user.password === password
@@ -37,34 +52,32 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem("loggedInUser", JSON.stringify(foundUser));
     setUser(foundUser);
     toast.success("Logged in successfully");
-return foundUser;
-
+    return foundUser;
   };
 
- const register = async (email, password, name, role = "user", mobile, marketInfo) => {
-  const users = JSON.parse(localStorage.getItem("users")) || [];
-  const existingUser = users.find((user) => user.email === email);
+  // ✅ User registration only (no admin or seller registration)
+  const register = async (email, password, name) => {
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const existingUser = users.find((user) => user.email === email);
 
-  if (existingUser) {
-    toast.error("User already exists with this email");
-    throw new Error("Registration failed");
-  }
+    if (existingUser) {
+      toast.error("User already exists with this email");
+      throw new Error("Registration failed");
+    }
 
-  const newUser = {
-    name,
-    email,
-    password,
-    role,
-    ...(role === 'admin' && { mobile, marketInfo })
+    const newUser = {
+      name,
+      email,
+      password,
+      role: "user",
+    };
+
+    users.push(newUser);
+    localStorage.setItem("users", JSON.stringify(users));
+    localStorage.setItem("loggedInUser", JSON.stringify(newUser));
+    setUser(newUser);
+    toast.success("Account created successfully");
   };
-
-  users.push(newUser);
-  localStorage.setItem("users", JSON.stringify(users));
-  localStorage.setItem("loggedInUser", JSON.stringify(newUser));
-  setUser(newUser);
-  toast.success("Account created successfully");
-};
-
 
   const logout = () => {
     localStorage.removeItem("loggedInUser");

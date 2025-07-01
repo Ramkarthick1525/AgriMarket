@@ -10,7 +10,7 @@ const Footer = () => {
           <div>
             <div className="flex items-center space-x-2 mb-4">
               <Sprout className="h-8 w-8 text-green-300" />
-              <span className="text-xl font-bold">AgriMart</span>
+              <span className="text-xl font-bold">Farm Produce Hub</span>
             </div>
             <p className="text-green-200 mb-4">
               Your trusted partner for all agricultural needs. Quality products, 
@@ -50,16 +50,17 @@ const Footer = () => {
             <div className="space-y-3">
               <div className="flex items-center space-x-2">
                 <Phone className="h-4 w-4 text-green-300" />
-                <span className="text-green-200">+91 98765 43210</span>
+                <span className="text-green-200">+91 90423 94728</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Mail className="h-4 w-4 text-green-300" />
-                <span className="text-green-200">support@agrimart.in</span>
+                <span className="text-green-200">farmproducehub05@gmail.com</span>
               </div>
               <div className="flex items-center space-x-2">
                 <MapPin className="h-4 w-4 text-green-300" />
-                <span className="text-green-200">AgriMart HQ
-                123 Green Lane, Coimbatore, Tamil Nadu, India</span>
+                <span className="text-green-200">Farm Produce Hub,
+                Harur,Dharmapuri,Tamilnadu <br />
+                India</span>
               </div>
             </div>
           </div>
@@ -67,7 +68,7 @@ const Footer = () => {
 
         <div className="border-t border-green-800 mt-8 pt-8 text-center">
           <p className="text-green-200">
-            © 2024 AgriMart. All rights reserved. | Built for agricultural excellence.
+            © 2024 Farm Produce Hub. All rights reserved. | Built for agricultural excellence.
           </p>
         </div>
       </div>

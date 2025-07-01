@@ -15,15 +15,16 @@ const ContactUs = () => {
       <div className="space-y-6 text-gray-700">
         <div>
           <h3 className="text-xl font-semibold text-green-700">📍 Address</h3>
-          <p>AgriMart HQ<br />123 Green Lane, Coimbatore, Tamil Nadu, India</p>
+          <p>Farm Produce Hub<br />Harur,Dharmapuri,Tamilnadu <br />
+                India</p>
         </div>
         <div>
           <h3 className="text-xl font-semibold text-green-700">📞 Phone</h3>
-          <p>+91 98765 43210</p>
+          <p>+91 90423 94728</p>
         </div>
         <div>
           <h3 className="text-xl font-semibold text-green-700">📧 Email</h3>
-          <p>support@agrimart.in</p>
+          <p>farmproducehub05@gmail.com</p>
         </div>
       </div>
 

@@ -7,42 +7,85 @@ import LoadingSpinner from '../components/LoadingSpinner';
 
 // Mapping from URL slug to actual category name stored by admin
 const categorySlugMap = {
-  'seeds-fertilizers': 'Seeds & Fertilizers',
-  'fresh-produce': 'Vegetables',
+  'seeds-organic': 'Seeds - Organic',
+  'seeds-inorganic': 'Seeds - Inorganic',
+  'fertilizers-organic': 'Fertilizers - Organic',
+  'fertilizers-inorganic': 'Fertilizers - Inorganic',
   'machinery': 'Machinery',
-  'livestock': 'Diary',
-  'fruits': 'Fruits',
-  
+  'Diary': 'Diary',
+  'trees-fruit': 'Fruit Trees',
+  'trees-ornamental': 'Ornamental Trees',
+  'poultry-chick': 'Chick',
+  'poultry-duck': 'Duck',
+  'poultry-turkey': 'Turkey',
+  'vegetables': 'Vegetables',
 };
+
 
 // Header info for each category
 const categoryInfo = {
-  'seeds-fertilizers': {
-    title: 'Seeds & Fertilizers',
-    description: 'Premium quality seeds and organic fertilizers for optimal crop growth',
+  'seeds-organic': {
+    title: 'Organic Seeds',
+    description: 'Naturally sourced seeds for healthier crops',
+    bgColor: 'bg-lime-600'
+  },
+  'seeds-inorganic': {
+    title: 'Inorganic Seeds',
+    description: 'Scientifically improved seeds for better yield',
+    bgColor: 'bg-lime-800'
+  },
+  'fertilizers-organic': {
+    title: 'Organic Fertilizers',
+    description: 'Eco-friendly fertilizers for sustainable farming',
     bgColor: 'bg-green-600'
   },
-  'fresh-produce': {
-    title: 'Vegetables',
-    description: 'Farm-fresh fruits and vegetables delivered daily',
-    bgColor: 'bg-orange-600'
+  'fertilizers-inorganic': {
+    title: 'Inorganic Fertilizers',
+    description: 'Boost crop productivity with chemical fertilizers',
+    bgColor: 'bg-green-800'
   },
   'machinery': {
     title: 'Agricultural Machinery',
-    description: 'Modern farming equipment and tools for efficient agriculture',
+    description: 'Modern equipment to enhance productivity',
     bgColor: 'bg-blue-600'
   },
-  'livestock': {
+  'Diary': {
     title: 'Diary Items',
-    description: 'Everything you need for healthy and productive livestock',
+    description: 'Fresh and healthy dairy products',
     bgColor: 'bg-amber-600'
   },
-  'fruits': {
-    title: 'Fresh Fruits',
-    description: 'Sweet, juicy, and locally sourced fruits',
-    bgColor: 'bg-pink-600'
+  'trees-fruit': {
+    title: 'Fruit Trees',
+    description: 'Grow your own fruits with our best tree varieties',
+    bgColor: 'bg-pink-700'
+  },
+  'trees-ornamental': {
+    title: 'Ornamental Trees',
+    description: 'Beautify farms and gardens with ornamental trees',
+    bgColor: 'bg-purple-600'
+  },
+  'poultry-chick': {
+    title: 'Chick',
+    description: 'Supplies and feed for chick farming',
+    bgColor: 'bg-yellow-500'
+  },
+  'poultry-duck': {
+    title: 'Duck',
+    description: 'All you need for duck rearing',
+    bgColor: 'bg-yellow-700'
+  },
+  'poultry-turkey': {
+    title: 'Turkey',
+    description: 'Top-quality turkeys and accessories',
+    bgColor: 'bg-red-500'
+  },
+  'vegetables':{
+    title: 'vegetables',
+    description: 'Farm-fresh vegetables and their seeds delivered to your door',
+    bgColor: 'bg-orange-500'
   }
 };
+
 
 const CategoryPage = () => {
   const { category } = useParams();
@@ -175,6 +218,7 @@ const CategoryPage = () => {
             </div>
           </div>
         </div>
+        
 
         {/* Product Listing */}
         {filteredProducts.length === 0 ? (

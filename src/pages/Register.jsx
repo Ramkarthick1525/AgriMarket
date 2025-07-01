@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, User, Eye, EyeOff, Phone, Building2, Sprout } from 'lucide-react';
+import { Mail, Lock, User, Eye, EyeOff, Sprout } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -10,9 +10,6 @@ const Register = () => {
     email: '',
     password: '',
     confirmPassword: '',
-    role: 'user',
-    mobile: '',
-    marketInfo: '',
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -32,8 +29,7 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const { name, email, password, confirmPassword, role, mobile, marketInfo } = formData;
+    const { name, email, password, confirmPassword } = formData;
 
     if (!name || !email || !password || !confirmPassword) {
       toast.error('Please fill in all required fields');
@@ -50,20 +46,15 @@ const Register = () => {
       return;
     }
 
-    if (role === 'admin' && (!mobile || !marketInfo)) {
-      toast.error('Please provide mobile number and marketing info for admin');
+    if (email === 'tamilvaanan2004@gmail.com') {
+      toast.error('You cannot register as Admin');
       return;
     }
 
     setLoading(true);
     try {
-      await register(email, password, name, role, mobile, marketInfo);
-if (role === 'admin') {
-  navigate('/admin');
-} else {
-  navigate('/');
-}
-
+      await register(email, password, name, 'user'); // role always 'user'
+      navigate('/');
     } catch (error) {
       console.error('Registration error:', error);
     } finally {
@@ -159,54 +150,6 @@ if (role === 'admin') {
               </button>
             </div>
           </div>
-
-          <div>
-            <label className="block text-sm mb-1 font-medium">Account Type</label>
-            <select
-              name="role"
-              value={formData.role}
-              onChange={handleChange}
-              className="w-full px-3 py-3 border rounded-lg focus:ring-green-500"
-            >
-              <option value="user">User</option>
-              <option value="admin">Admin</option>
-            </select>
-          </div>
-
-          {formData.role === 'admin' && (
-            <>
-              <div>
-                <label className="block text-sm mb-1 font-medium">Mobile Number</label>
-                <div className="relative">
-                  <Phone className="absolute left-3 top-3 text-gray-400" />
-                  <input
-                    type="text"
-                    name="mobile"
-                    value={formData.mobile}
-                    onChange={handleChange}
-                    placeholder="Enter your mobile number"
-                    className="w-full pl-10 pr-3 py-3 border rounded-lg focus:ring-green-500"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm mb-1 font-medium">Marketing Info</label>
-                <select
-                  name="marketInfo"
-                  value={formData.marketInfo}
-                  onChange={handleChange}
-                  className="w-full px-3 py-3 border rounded-lg focus:ring-green-500"
-                >
-                  <option value="">Select an option</option>
-                  <option value="Local Market">Local Market</option>
-                  <option value="Wholesalers">Wholesalers</option>
-                  <option value="Traders">Traders</option>
-                  <option value="Retailers">Retailers</option>
-                </select>
-              </div>
-            </>
-          )}
 
           <button
             type="submit"

@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
-const AdminPanel = () => {
+const AdminDashboard = () => {
   const { user } = useAuth();
-  const navigate = useNavigate();
-  const adminId = user?.email || 'default';
+  const adminId = 'admin'; // fixed admin key for storage
   const [products, setProducts] = useState([]);
   const [orders, setOrders] = useState([]);
+
   const [formData, setFormData] = useState({
     name: '',
     price: '',
     quantity: '',
     category: '',
     description: '',
-    image: ''
+    image: '',
+    rental: false
   });
+
   const [editingId, setEditingId] = useState(null);
   const [editData, setEditData] = useState({});
 
@@ -25,18 +26,26 @@ const AdminPanel = () => {
     setProducts(storedProducts);
     const storedOrders = JSON.parse(localStorage.getItem(`orders_${adminId}`)) || [];
     setOrders(storedOrders);
-  }, [adminId]);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleCheckboxChange = (e) => {
+    setFormData(prev => ({
+      ...prev,
+      rental: e.target.checked,
+      quantity: e.target.checked ? '' : prev.quantity
+    }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const { name, category, price, quantity, description, image } = formData;
+    const { name, category, price, quantity, description, image, rental } = formData;
 
-    if (!name || !category || !price || !quantity || !description || !image) {
+    if (!name || !category || !price || !description || !image || (!rental && !quantity)) {
       toast.error("All fields are required.");
       return;
     }
@@ -51,7 +60,15 @@ const AdminPanel = () => {
     localStorage.setItem(`products_${adminId}`, JSON.stringify(updatedProducts));
     setProducts(updatedProducts);
     toast.success("Product added successfully!");
-    setFormData({ name: '', price: '', quantity: '', category: '', description: '', image: '' });
+    setFormData({
+      name: '',
+      price: '',
+      quantity: '',
+      category: '',
+      description: '',
+      image: '',
+      rental: false
+    });
   };
 
   const handleEdit = (product) => {
@@ -60,12 +77,15 @@ const AdminPanel = () => {
   };
 
   const handleEditChange = (e) => {
-    const { name, value } = e.target;
-    setEditData((prev) => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    setEditData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
   };
 
   const handleUpdate = () => {
-    const updated = products.map((prod) =>
+    const updated = products.map(prod =>
       prod.id === editingId ? editData : prod
     );
     setProducts(updated);
@@ -80,7 +100,7 @@ const AdminPanel = () => {
   };
 
   const handleDelete = (id) => {
-    const filtered = products.filter((p) => p.id !== id);
+    const filtered = products.filter(p => p.id !== id);
     setProducts(filtered);
     localStorage.setItem(`products_${adminId}`, JSON.stringify(filtered));
   };
@@ -93,40 +113,67 @@ const AdminPanel = () => {
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="max-w-7xl mx-auto space-y-8">
-
         <div className="bg-white p-6 rounded-xl shadow">
-          <h1 className="text-3xl font-bold text-green-800">Welcome, Admin {user?.name || 'User'}</h1>
+          <h1 className="text-3xl font-bold text-green-800">
+            Welcome, Admin
+          </h1>
         </div>
 
         <div className="bg-white p-6 rounded-xl shadow">
           <h2 className="text-2xl font-bold mb-4">Add New Product</h2>
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input type="text" name="name" placeholder="Product Name" className="border p-2 rounded" value={formData.name} onChange={handleChange} required />
-            <select
-  name="category"
-  className="border p-2 rounded"
-  value={formData.category}
-  onChange={handleChange}
-  required
->
-  <option value="">Select Category</option>
-  <option value="Seeds & Fertilizers">Seeds & Fertilizers</option>
-  <option value="Vegetables">Vegetables</option>
-  <option value="Fruits">Fruits</option>
-  <option value="Machinery">Machinery</option>
-  <option value="Diary">Diary</option>
-</select>
 
-            <input type="number" name="price" placeholder="Price (Rs)" className="border p-2 rounded" value={formData.price} onChange={handleChange} required />
-            <input type="number" name="quantity" placeholder="Quantity" className="border p-2 rounded" value={formData.quantity} onChange={handleChange} required />
+            <select name="category" className="border p-2 rounded" value={formData.category} onChange={handleChange} required>
+              <option value="">Select Category</option>
+              <optgroup label="Seeds">
+                <option value="Seeds - Organic">Organic Seeds</option>
+                <option value="Seeds - Inorganic">Inorganic Seeds</option>
+              </optgroup>
+              <optgroup label="Fertilizers">
+                <option value="Fertilizers - Organic">Organic Fertilizers</option>
+                <option value="Fertilizers - Inorganic">Inorganic Fertilizers</option>
+              </optgroup>
+              <optgroup label="Trees">
+                <option value="Fruit Trees">Fruit Trees</option>
+                <option value="Ornamental Trees">Ornamental Trees</option>
+              </optgroup>
+              <optgroup label="Poultry">
+                <option value="Chick">Chick</option>
+                <option value="Duck">Duck</option>
+                <option value="Turkey">Turkey</option>
+              </optgroup>
+              <option value="Vegetables">Vegetables</option>
+              <option value="Machinery">Machinery</option>
+              <option value="Diary">Diary</option>
+            </select>
+
+            {formData.category === 'Machinery' && (
+              <div className="md:col-span-2 flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  name="rental"
+                  checked={formData.rental}
+                  onChange={handleCheckboxChange}
+                />
+                <label className="text-sm text-gray-700">Available for Rent</label>
+              </div>
+            )}
+
+            <input type="number" name="price" placeholder={formData.rental ? "Rent per Day (Rs)" : "Price (Rs)"} className="border p-2 rounded" value={formData.price} onChange={handleChange} required />
+
+            {!(formData.category === 'Machinery' && formData.rental) && (
+              <input type="number" name="quantity" placeholder="Quantity" className="border p-2 rounded" value={formData.quantity} onChange={handleChange} required />
+            )}
+
             <input type="url" name="image" placeholder="Image URL" className="border p-2 rounded" value={formData.image} onChange={handleChange} required />
             <textarea name="description" placeholder="Description" className="border p-2 rounded md:col-span-2" rows="3" value={formData.description} onChange={handleChange} required></textarea>
-            <button type="submit" className="bg-green-600 text-white py-2 rounded hover:bg-green-700 md:col-span-2">Add Product</button>
+
+            <button type="submit" className="bg-green-600 text-white py-2 rounded hover:bg-green-700 md:col-span-2">
+              Add Product
+            </button>
           </form>
         </div>
-
-     
-
 
         <div className="bg-white p-6 rounded-xl shadow">
           <h2 className="text-2xl font-bold mb-4">Added Products</h2>
@@ -142,8 +189,23 @@ const AdminPanel = () => {
                       <div className="space-y-2">
                         <input type="text" name="name" value={editData.name} onChange={handleEditChange} className="w-full border p-1 rounded" />
                         <input type="text" name="category" value={editData.category} onChange={handleEditChange} className="w-full border p-1 rounded" />
+
+                        {editData.category === 'Machinery' && (
+                          <div className="flex items-center gap-2">
+                            <input
+                              type="checkbox"
+                              name="rental"
+                              checked={editData.rental}
+                              onChange={handleEditChange}
+                            />
+                            <label className="text-sm text-gray-700">Available for Rent</label>
+                          </div>
+                        )}
+
                         <input type="number" name="price" value={editData.price} onChange={handleEditChange} className="w-full border p-1 rounded" />
-                        <input type="number" name="quantity" value={editData.quantity} onChange={handleEditChange} className="w-full border p-1 rounded" />
+                        {!(editData.category === 'Machinery' && editData.rental) && (
+                          <input type="number" name="quantity" value={editData.quantity} onChange={handleEditChange} className="w-full border p-1 rounded" />
+                        )}
                         <textarea name="description" value={editData.description} onChange={handleEditChange} className="w-full border p-1 rounded" />
                         <input type="url" name="image" value={editData.image} onChange={handleEditChange} className="w-full border p-1 rounded" />
                         <div className="flex gap-2">
@@ -155,8 +217,10 @@ const AdminPanel = () => {
                       <>
                         <p className="font-bold text-lg">{product.name}</p>
                         <p className="text-sm text-gray-600">Category: {product.category}</p>
-                        <p className="text-sm text-gray-600">Price: ₹{product.price}</p>
-                        <p className="text-sm text-gray-600">Quantity: {product.quantity}</p>
+                        <p className="text-sm text-gray-600">
+                          {product.rental ? `Rent: ₹${product.price}/day` : `Price: ₹${product.price}`}
+                        </p>
+                        {!product.rental && <p className="text-sm text-gray-600">Quantity: {product.quantity}</p>}
                         <p className="text-sm text-gray-600">{product.description}</p>
                         <div className="flex gap-2 mt-2">
                           <button onClick={() => handleEdit(product)} className="bg-yellow-500 text-white px-3 py-1 rounded">Edit</button>
@@ -173,27 +237,26 @@ const AdminPanel = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-white p-6 rounded-xl shadow">
-            <h2 className="text-xl font-semibold text-gray-800 mb-2">Total Orders</h2>
+            <h2 className="text-xl font-semibold mb-2">Total Orders</h2>
             <p className="text-2xl font-bold text-green-700">{totalOrders}</p>
           </div>
           <div className="bg-white p-6 rounded-xl shadow">
-            <h2 className="text-xl font-semibold text-gray-800 mb-2">Completed Orders</h2>
+            <h2 className="text-xl font-semibold mb-2">Completed Orders</h2>
             <p className="text-2xl font-bold text-green-700">{completedOrders}</p>
           </div>
           <div className="bg-white p-6 rounded-xl shadow">
-            <h2 className="text-xl font-semibold text-gray-800 mb-2">Pending Orders</h2>
+            <h2 className="text-xl font-semibold mb-2">Pending Orders</h2>
             <p className="text-2xl font-bold text-green-700">{pendingOrders}</p>
           </div>
         </div>
 
         <div className="bg-white p-6 rounded-xl shadow text-right">
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">Total Earnings</h2>
+          <h2 className="text-2xl font-bold mb-2">Total Earnings</h2>
           <p className="text-3xl font-bold text-green-700">₹{totalEarnings}</p>
         </div>
-
       </div>
     </div>
   );
 };
 
-export default AdminPanel;
+export default AdminDashboard;

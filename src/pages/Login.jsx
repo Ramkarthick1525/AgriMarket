@@ -1,60 +1,52 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext'; // ✅ Make sure this path is correct
+import { useAuth } from '../contexts/AuthContext';
 import { Mail, Lock, Eye, EyeOff, Sprout } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const Login = () => {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  });
+  const [formData, setFormData] = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const { login } = useAuth(); // ✅ This must be here
+  const { login } = useAuth();
   const navigate = useNavigate();
-
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (!formData.email || !formData.password) {
-    toast.error('Please fill in all fields');
-    return;
-  }
+    if (!formData.email || !formData.password) {
+      toast.error('Please fill in all fields');
+      return;
+    }
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(formData.email)) {
-    toast.error('Please enter a valid email address');
-    return;
-  }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      toast.error('Please enter a valid email address');
+      return;
+    }
 
-  setLoading(true);
-  try {
-    const loggedInUser = await login(formData.email.trim(), formData.password);
-    
-    
+    setLoading(true);
+    try {
+      const loggedInUser = await login(formData.email.trim(), formData.password);
 
-
-if (loggedInUser.role === 'admin') {
-  navigate('/admin');
-} else {
-  navigate('/');
-}
-
-
-  } catch (error) {
-    console.error('Login error:', error);
-  } finally {
-    setLoading(false);
-  }
-};
-
+      // ✅ Admin route
+      if (loggedInUser.role === 'admin') {
+        navigate('/admin');
+      } else {
+        // ✅ Normal user route
+        navigate('/');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center px-4">
@@ -66,7 +58,7 @@ if (loggedInUser.role === 'admin') {
             </div>
           </div>
           <h2 className="text-3xl font-bold text-gray-900">Welcome Back</h2>
-          <p className="mt-2 text-gray-600">Sign in to your AgriMart account</p>
+          <p className="mt-2 text-gray-600">Sign in to your Farm Produce Hub account</p>
         </div>
 
         <div className="bg-white rounded-xl shadow-lg p-8">
@@ -76,9 +68,7 @@ if (loggedInUser.role === 'admin') {
                 Email Address
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-gray-400" />
-                </div>
+                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
                 <input
                   id="email"
                   name="email"
@@ -86,7 +76,7 @@ if (loggedInUser.role === 'admin') {
                   required
                   value={formData.email}
                   onChange={handleChange}
-                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                  className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
                   placeholder="Enter your email"
                 />
               </div>
@@ -97,9 +87,7 @@ if (loggedInUser.role === 'admin') {
                 Password
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-gray-400" />
-                </div>
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
                 <input
                   id="password"
                   name="password"
@@ -107,7 +95,7 @@ if (loggedInUser.role === 'admin') {
                   required
                   value={formData.password}
                   onChange={handleChange}
-                  className="block w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                  className="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
                   placeholder="Enter your password"
                 />
                 <button

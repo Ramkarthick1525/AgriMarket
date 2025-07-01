@@ -11,8 +11,8 @@ const Home = () => {
 
   const categories = [
     {
-      name: 'Seeds & Fertilizers',
-      path: '/category/seeds-fertilizers',
+      name: 'Organic seeds',
+      path: '/category/seeds-organic',
       description: 'High-quality seeds and organic fertilizers for better yields',
       image: 'https://cdn.pixabay.com/photo/2015/05/14/02/22/soil-766281_1280.jpg',
       bgColor: 'bg-green-100',
@@ -20,8 +20,8 @@ const Home = () => {
     },
     {
       name: 'Vegetables',
-      path: '/category/fresh-produce',
-      description: 'Farm-fresh fruits and vegetables delivered to your door',
+      path: '/category/vegetables',
+      description: 'Farm-fresh vegetables and their seeds  delivered to your door',
       image: 'https://static.toiimg.com/thumb/msid-121897288,width-1280,height-720,resizemode-4/121897288.jpg',
       bgColor: 'bg-orange-100',
       textColor: 'text-orange-800'
@@ -36,9 +36,9 @@ const Home = () => {
     },
     
     {
-      name: 'Fruits',
-      path: '/category/fruits',
-      description: 'Everything you need for healthy and productive livestock',
+      name: 'Diary',
+      path: '/category/Diary',
+      description: 'Fresh and healthy dairy products ',
       image: 'https://i.pinimg.com/736x/c2/a5/03/c2a5035df9bad2990471306b6d1a2a4f.jpg',
       bgColor: 'bg-amber-100',
       textColor: 'text-amber-800'
@@ -78,7 +78,7 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="text-center">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              Welcome to AgriMarket
+              Welcome to Farm Produce Hub
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-green-100">
               Your one-stop shop for all agricultural needs
@@ -88,7 +88,7 @@ const Home = () => {
               we provide everything farmers need to grow and succeed.
             </p>
             <Link
-              to="/category/seeds-fertilizers"
+              to="/category/seeds-organic"
               className="inline-flex items-center bg-white text-green-800 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-green-50 transition-all duration-300 transform hover:scale-105 shadow-lg"
             >
               Start Shopping
@@ -173,7 +173,7 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Why Choose AgriMart?
+              Why Choose Farm Produce Hub?
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               We're committed to supporting farmers with quality products and exceptional service
@@ -209,12 +209,12 @@ const Home = () => {
             Ready to Get Started?
           </h2>
           <p className="text-xl mb-8 text-green-100">
-            Join thousands of farmers who trust AgriMart for their agricultural needs
+            Join thousands of farmers who trust Farm Produce Hub for their agricultural needs
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             
             <Link
-              to="/category/seeds-fertilizers"
+              to="/category/seeds-organic"
               className="inline-flex items-center border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-green-700 transition-all duration-300"
             >
               Browse Products

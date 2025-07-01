@@ -44,24 +44,57 @@ const Navbar = () => {
   };
 
   const categories = [
-    { name: 'Seeds & Fertilizers', path: '/category/seeds-fertilizers' },
-    { name: 'Vegetables', path: '/category/fresh-produce' },
-    { name: 'Fruits', path: '/category/fruits' },
-    { name: 'Machinery', path: '/category/machinery' },
-    { name: 'Dairy', path: '/category/livestock' }
-  ];
+  {
+    name: 'Seeds',
+    subcategories: [
+      { name: 'Organic Seeds', path: '/category/seeds-organic' },
+      { name: 'Inorganic Seeds', path: '/category/seeds-inorganic' }
+    ]
+  },
+  {
+    name: 'Fertilizers',
+    subcategories: [
+      { name: 'Organic Fertilizers', path: '/category/fertilizers-organic' },
+      { name: 'Inorganic Fertilizers', path: '/category/fertilizers-inorganic' }
+    ]
+  },
+  {
+    name: 'Trees',
+    subcategories: [
+      { name: 'Fruit Trees', path: '/category/trees-fruit' },
+      { name: 'Ornamental Trees', path: '/category/trees-ornamental' }
+    ]
+  },
+  {
+    name: 'Poultry',
+    subcategories: [
+      { name: 'Chick', path: '/category/poultry-chick' },
+      { name: 'Duck', path: '/category/poultry-duck' },
+      { name: 'Turkey', path: '/category/poultry-turkey' }
+    ]
+  },
+  { name: 'Machinery', path: '/category/machinery' },
+  { name: 'Dairy', path: '/category/Diary' },
+  { name: 'Vegetables', path: '/category/vegetables'}
+];
+
 
   return (
     <nav className="bg-green-800 shadow-lg sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo (shown to all) */}
-          <Link to={isAdmin ? "/admin" : "/"} className="flex items-center space-x-2">
-            <Sprout className="h-8 w-8 text-green-300" />
-            <span className="text-white text-xl font-bold">
-              {isAdmin ? "Admin" : "AgriMart"}
-            </span>
-          </Link>
+<Link to={isAdmin ? "/admin" : "/"} className="flex items-center space-x-2">
+  <img
+    src="src/assets/logo.jpg" // or wherever your logo is located, e.g., /assets/logo.png
+    
+    className="h-8 w-8 object-contain"
+  />
+  <span className="text-white text-xl font-bold">
+    Farm Produce Hub
+  </span>
+</Link>
+
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
@@ -74,21 +107,35 @@ const Navbar = () => {
 
                 {/* Categories Dropdown */}
                 <div className="relative group">
-                  <button className="text-white hover:text-green-300">
-                    Categories
-                  </button>
-                  <div className="absolute top-full left-0 mt-1 w-48 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                    {categories.map((category) => (
-                      <Link
-                        key={category.path}
-                        to={category.path}
-                        className="block px-4 py-2 text-gray-800 hover:bg-green-50 hover:text-green-800"
-                      >
-                        {category.name}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
+  <button className="text-white hover:text-green-300">Categories</button>
+  <div className="absolute top-full left-0 mt-1 w-64 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+    {categories.map((cat, index) =>
+      cat.subcategories ? (
+        <div key={index} className="border-b px-2 py-1">
+          <p className="text-sm font-semibold text-gray-700 px-2">{cat.name}</p>
+          {cat.subcategories.map((sub) => (
+            <Link
+              key={sub.path}
+              to={sub.path}
+              className="block px-4 py-1 text-sm text-gray-800 hover:bg-green-50 hover:text-green-800"
+            >
+              {sub.name}
+            </Link>
+          ))}
+        </div>
+      ) : (
+        <Link
+          key={cat.path}
+          to={cat.path}
+          className="block px-4 py-2 text-gray-800 hover:bg-green-50 hover:text-green-800"
+        >
+          {cat.name}
+        </Link>
+      )
+    )}
+  </div>
+</div>
+
               </>
             )}
             {isAdmin && (
@@ -194,16 +241,33 @@ const Navbar = () => {
         {isMenuOpen && (
           <div className="md:hidden bg-green-700 px-4 pb-4">
             <Link to="/" className="block py-2 text-white hover:text-green-300" onClick={() => setIsMenuOpen(false)}>Home</Link>
-            {!isAdmin && categories.map((category) => (
-              <Link
-                key={category.path}
-                to={category.path}
-                className="block py-2 text-white hover:text-green-300"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {category.name}
-              </Link>
-            ))}
+            {!isAdmin && categories.map((cat, index) => (
+  cat.subcategories ? (
+    <div key={index}>
+      <span className="block py-1 text-green-200 font-semibold">{cat.name}</span>
+      {cat.subcategories.map((sub) => (
+        <Link
+          key={sub.path}
+          to={sub.path}
+          className="block py-1 text-white pl-4 hover:text-green-300"
+          onClick={() => setIsMenuOpen(false)}
+        >
+          {sub.name}
+        </Link>
+      ))}
+    </div>
+  ) : (
+    <Link
+      key={cat.path}
+      to={cat.path}
+      className="block py-2 text-white hover:text-green-300"
+      onClick={() => setIsMenuOpen(false)}
+    >
+      {cat.name}
+    </Link>
+  )
+))}
+
             {isAdmin && (
               <Link to="/admin" className="block py-2 text-white hover:text-green-300" onClick={() => setIsMenuOpen(false)}>Admin Panel</Link>
             )}
