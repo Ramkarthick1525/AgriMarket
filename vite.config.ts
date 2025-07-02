@@ -14,6 +14,6 @@ export default defineConfig({
   },
   // 👇 This is the key part
   server: {
-    historyApiFallback: true
+    
   }
 });
