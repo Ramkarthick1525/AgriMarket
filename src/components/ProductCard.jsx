@@ -28,7 +28,7 @@ const ProductCard = ({ product }) => {
     fetchWishlistStatus();
   }, [user, product.id]);
 
-  const handleAddToCart = (e) => {
+  const handleAddToCart = async (e) => {
     e.preventDefault();
 
     if (!user) {
@@ -36,19 +36,26 @@ const ProductCard = ({ product }) => {
       return;
     }
 
-    const userEmail = user.email;
-    const cartKey = `cart_${userEmail}`;
-    const existingCart = JSON.parse(localStorage.getItem(cartKey)) || [];
+    const cartRef = doc(db, 'carts', user.email);
 
-    const alreadyInCart = existingCart.some(item => item.id === product.id);
-    if (alreadyInCart) {
-      toast.error('Product already in cart!');
-      return;
+    try {
+      const cartSnap = await getDoc(cartRef);
+      const currentCart = cartSnap.exists() ? cartSnap.data().items || [] : [];
+
+      const alreadyInCart = currentCart.some(item => item.id === product.id);
+      if (alreadyInCart) {
+        toast.error('Product already in cart!');
+        return;
+      }
+
+      const updatedCart = [...currentCart, { ...product, quantity: 1 }];
+      await setDoc(cartRef, { items: updatedCart });
+
+      toast.success(`${product.name} added to cart!`);
+    } catch (err) {
+      console.error('Add to cart error:', err);
+      toast.error('Failed to add product to cart');
     }
-
-    const updatedCart = [...existingCart, { ...product, cartQuantity: 1 }];
-    localStorage.setItem(cartKey, JSON.stringify(updatedCart));
-    toast.success(`${product.name} added to cart!`);
   };
 
   const handleRentNow = async (e) => {
