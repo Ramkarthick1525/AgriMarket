@@ -8,7 +8,8 @@ import {
   ShoppingCart,
   LogOut,
   Settings,
-  Sprout
+  Sprout,
+  Heart
 } from 'lucide-react';
 
 
@@ -176,14 +177,34 @@ const Navbar = () => {
 
     {/* Only for user */}
     {!isAdmin && (
-      <Link
-        to="/Cart"
-        className="flex items-center px-4 py-2 text-gray-800 hover:bg-green-50 hover:text-green-800"
-        onClick={() => setIsProfileOpen(false)}
-      >
-        <ShoppingCart className="h-4 w-4 mr-2" />
-        Cart
-      </Link>
+      <>
+        <Link
+          to="/Cart"
+          className="flex items-center px-4 py-2 text-gray-800 hover:bg-green-50 hover:text-green-800"
+          onClick={() => setIsProfileOpen(false)}
+        >
+          <ShoppingCart className="h-4 w-4 mr-2" />
+          Cart
+        </Link>
+
+        <Link
+          to="/wishlist"
+          className="flex items-center px-4 py-2 text-gray-800 hover:bg-green-50 hover:text-green-800"
+          onClick={() => setIsProfileOpen(false)}
+        >
+          <Heart className="h-4 w-4 mr-2" />
+          Wishlist
+        </Link>
+
+        <Link
+          to="/orders"
+          className="flex items-center px-4 py-2 text-gray-800 hover:bg-green-50 hover:text-green-800"
+          onClick={() => setIsProfileOpen(false)}
+        >
+          <Sprout className="h-4 w-4 mr-2" />
+          My Orders
+        </Link>
+      </>
     )}
 
     {/* Only for admin */}
@@ -207,6 +228,7 @@ const Navbar = () => {
     </button>
   </div>
 )}
+
 
 
               </div>

@@ -4,6 +4,8 @@ import { Search, Filter } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import ProductCard from '../components/ProductCard';
 import LoadingSpinner from '../components/LoadingSpinner';
+import { db } from '../firebase/config';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 
 // Mapping from URL slug to actual category name stored by admin
 const categorySlugMap = {
@@ -98,29 +100,37 @@ const CategoryPage = () => {
   const [priceRange, setPriceRange] = useState({ min: '', max: '' });
 
   // Load all admin products from localStorage and filter by category
-  useEffect(() => {
+  
+
+useEffect(() => {
+  const fetchProducts = async () => {
     setLoading(true);
+    try {
+      const categoryName = categorySlugMap[category];
 
-    const allProducts = [];
+      const q = query(
+        collection(db, 'products'),
+        where('category', '==', categoryName)
+      );
 
-    for (let key in localStorage) {
-      if (key.startsWith('products_')) {
-        try {
-          const productsForAdmin = JSON.parse(localStorage.getItem(key));
-          allProducts.push(...productsForAdmin);
-        } catch (err) {
-          console.warn(`Failed to parse ${key}`, err);
-        }
-      }
+      const snapshot = await getDocs(q);
+      const productsData = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+
+      setProducts(productsData);
+      setFilteredProducts(productsData);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    } finally {
+      setLoading(false);
     }
+  };
 
-    const categoryName = categorySlugMap[category]; // match with admin format
-    const categoryProducts = allProducts.filter(p => p.category === categoryName);
+  fetchProducts();
+}, [category]);
 
-    setProducts(categoryProducts);
-    setFilteredProducts(categoryProducts);
-    setLoading(false);
-  }, [category]);
 
   // Handle search, sort, and price filter
   useEffect(() => {

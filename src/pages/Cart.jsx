@@ -2,22 +2,49 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { db } from '../firebase/config';
+import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 
 const CartPage = () => {
   const { user } = useAuth();
   const [cartItems, setCartItems] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const cartKey = `cart_${user?.email}`;
+  const cartRef = user ? doc(db, 'carts', user.email) : null;
 
+  // Fetch cart from Firestore
   useEffect(() => {
-    const storedCart = JSON.parse(localStorage.getItem(cartKey)) || [];
-    setCartItems(storedCart);
-  }, [cartKey]);
+    const fetchCart = async () => {
+      if (!user) return;
 
-  const handleRemove = (id) => {
+      try {
+        const docSnap = await getDoc(cartRef);
+        if (docSnap.exists()) {
+          setCartItems(docSnap.data().items || []);
+        }
+      } catch (err) {
+        console.error('Error loading cart:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCart();
+  }, [user]);
+
+  const updateCartInDB = async (updatedItems) => {
+    if (!user) return;
+    try {
+      await setDoc(cartRef, { items: updatedItems });
+    } catch (err) {
+      console.error('Failed to update cart:', err);
+    }
+  };
+
+  const handleRemove = async (id) => {
     const updated = cartItems.filter(item => item.id !== id);
-    localStorage.setItem(cartKey, JSON.stringify(updated));
     setCartItems(updated);
+    await updateCartInDB(updated);
   };
 
   const total = cartItems.reduce((sum, item) => sum + Number(item.price || 0), 0);
@@ -29,6 +56,10 @@ const CartPage = () => {
         <Link to="/login" className="text-green-600 underline">Go to Login</Link>
       </div>
     );
+  }
+
+  if (loading) {
+    return <div className="text-center p-10">Loading cart...</div>;
   }
 
   return (

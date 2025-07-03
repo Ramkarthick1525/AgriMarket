@@ -1,13 +1,24 @@
+// src/contexts/AuthContext.jsx
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { auth, db } from '../firebase/config';
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+} from 'firebase/auth';
+import {
+  doc,
+  setDoc,
+  getDoc,
+} from 'firebase/firestore';
 import toast from 'react-hot-toast';
 
 const AuthContext = createContext();
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
+  if (!context) throw new Error('useAuth must be used within an AuthProvider');
   return context;
 };
 
@@ -16,73 +27,85 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("loggedInUser"));
-    if (storedUser) {
-      setUser(storedUser);
-    }
-    setLoading(false);
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        if (firebaseUser.email === 'tamilvaanan2004@gmail.com') {
+          const adminUser = {
+            name: 'Admin',
+            email: firebaseUser.email,
+            role: 'admin',
+          };
+          setUser(adminUser);
+        } else {
+          const docRef = doc(db, 'users', firebaseUser.uid);
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            setUser({ ...docSnap.data(), email: firebaseUser.email, role: 'user' });
+          } else {
+            setUser({ email: firebaseUser.email, role: 'user' });
+          }
+        }
+      } else {
+        setUser(null);
+      }
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
   }, []);
 
-  // ✅ Admin login (hardcoded)
   const login = async (email, password) => {
-    if (email === 'tamilvaanan2004@gmail.com' && password === 'admin@123') {
-      const adminUser = {
-        name: "Admin",
-        email,
-        role: "admin",
-        
-      };
-      localStorage.setItem("loggedInUser", JSON.stringify(adminUser));
-      setUser(adminUser);
-      toast.success("Logged in as Admin");
-      return adminUser;
+    const res = await signInWithEmailAndPassword(auth, email, password);
+if (res.user.email === 'tamilvaanan2004@gmail.com') {
+  const adminUser = {
+    name: 'Admin',
+    email: res.user.email,
+    role: 'admin',
+  };
+  setUser(adminUser);
+  toast.success('Logged in as Admin');
+  return adminUser;
+}
+
+
+    try {
+      const res = await signInWithEmailAndPassword(auth, email, password);
+      const docRef = doc(db, 'users', res.user.uid);
+      const docSnap = await getDoc(docRef);
+      const userData = docSnap.exists() ? docSnap.data() : {};
+      const loggedInUser = { ...userData, email: res.user.email, role: 'user' };
+      setUser(loggedInUser);
+      toast.success('Logged in successfully');
+      return loggedInUser;
+    } catch (err) {
+      toast.error('Login failed: ' + err.message);
+      throw err;
     }
-
-    // ✅ Normal user login
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-    const foundUser = users.find(
-      (user) => user.email === email && user.password === password
-    );
-
-    if (!foundUser) {
-      toast.error("Invalid email or password");
-      throw new Error("Login failed");
-    }
-
-    localStorage.setItem("loggedInUser", JSON.stringify(foundUser));
-    setUser(foundUser);
-    toast.success("Logged in successfully");
-    return foundUser;
   };
 
-  // ✅ User registration only (no admin or seller registration)
   const register = async (email, password, name) => {
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-    const existingUser = users.find((user) => user.email === email);
+    try {
+      const res = await createUserWithEmailAndPassword(auth, email, password);
+      const newUser = {
+        name,
+        email,
+        role: 'user',
+      };
 
-    if (existingUser) {
-      toast.error("User already exists with this email");
-      throw new Error("Registration failed");
+      await setDoc(doc(db, 'users', res.user.uid), newUser);
+      setUser(newUser);
+      toast.success('Account created successfully');
+      return newUser;
+    } catch (err) {
+      toast.error('Registration failed: ' + err.message);
+      throw err;
     }
-
-    const newUser = {
-      name,
-      email,
-      password,
-      role: "user",
-    };
-
-    users.push(newUser);
-    localStorage.setItem("users", JSON.stringify(users));
-    localStorage.setItem("loggedInUser", JSON.stringify(newUser));
-    setUser(newUser);
-    toast.success("Account created successfully");
   };
 
-  const logout = () => {
-    localStorage.removeItem("loggedInUser");
+  const logout = async () => {
+    await signOut(auth);
     setUser(null);
-    toast.success("Logged out");
+    toast.success('Logged out');
   };
 
   const value = {
@@ -91,8 +114,8 @@ export const AuthProvider = ({ children }) => {
     login,
     register,
     logout,
-    isAdmin: user?.role === "admin",
-    isUser: user?.role === "user",
+    isAdmin: user?.role === 'admin',
+    isUser: user?.role === 'user',
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

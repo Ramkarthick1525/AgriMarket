@@ -1,3 +1,4 @@
+// src/pages/Register.jsx
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, User, Eye, EyeOff, Sprout } from 'lucide-react';
@@ -21,10 +22,7 @@ const Register = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
@@ -42,7 +40,7 @@ const Register = () => {
     }
 
     if (password.length < 6) {
-      toast.error('Password must be at least 6 characters long');
+      toast.error('Password must be at least 6 characters');
       return;
     }
 
@@ -52,13 +50,19 @@ const Register = () => {
     }
 
     setLoading(true);
+
     try {
-      await register(email, password, name, 'user'); // role always 'user'
-      navigate('/');
+      const newUser = await register(email, password, name);
+
+      if (newUser?.role === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/');
+      }
     } catch (error) {
       console.error('Registration error:', error);
     } finally {
-      setLoading(false);
+      setLoading(false); // ✅ Always reset loading
     }
   };
 
@@ -154,7 +158,7 @@ const Register = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700"
+            className="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition disabled:opacity-50"
           >
             {loading ? 'Creating Account...' : 'Create Account'}
           </button>
@@ -162,9 +166,7 @@ const Register = () => {
 
         <p className="text-sm text-center mt-4 text-gray-600">
           Already have an account?{' '}
-          <Link to="/login" className="text-green-600 font-medium hover:underline">
-            Sign in
-          </Link>
+          <Link to="/login" className="text-green-600 font-medium hover:underline">Sign in</Link>
         </p>
       </div>
     </div>

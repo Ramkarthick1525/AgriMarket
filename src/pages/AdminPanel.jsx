@@ -1,39 +1,65 @@
+
+
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import toast from 'react-hot-toast';
+import { db } from '../firebase/config';
+import {
+  collection,
+  addDoc,
+  getDocs,
+  doc,
+  updateDoc,
+  deleteDoc,
+  query,
+  where
+} from 'firebase/firestore';
 
 const AdminDashboard = () => {
   const { user } = useAuth();
-  const adminId = 'admin'; // fixed admin key for storage
   const [products, setProducts] = useState([]);
   const [orders, setOrders] = useState([]);
-
   const [formData, setFormData] = useState({
-    name: '',
-    price: '',
-    quantity: '',
-    category: '',
-    description: '',
-    image: '',
-    rental: false
+    name: '', price: '', quantity: '', category: '',
+    description: '', image: '', rental: false
   });
-
   const [editingId, setEditingId] = useState(null);
   const [editData, setEditData] = useState({});
 
+  const productsRef = collection(db, 'products');
+  const ordersRef = collection(db, 'orders');
+
   useEffect(() => {
-    const storedProducts = JSON.parse(localStorage.getItem(`products_${adminId}`)) || [];
-    setProducts(storedProducts);
-    const storedOrders = JSON.parse(localStorage.getItem(`orders_${adminId}`)) || [];
-    setOrders(storedOrders);
+    fetchProducts();
+    fetchOrders();
   }, []);
 
-  const handleChange = (e) => {
+  const fetchProducts = async () => {
+    const q = query(productsRef, where('admin', '==', user.email));
+    const snapshot = await getDocs(q);
+    const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    setProducts(data);
+  };
+
+  const fetchOrders = async () => {
+    const q = query(ordersRef, where('admin', '==', user.email));
+    const snapshot = await getDocs(q);
+    const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    setOrders(data);
+  };
+
+  const handleCancelEdit = () => {
+  setEditingId(null);
+  setEditData({});
+};
+
+
+  const handleChange = e => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleCheckboxChange = (e) => {
+  const handleCheckboxChange = e => {
     setFormData(prev => ({
       ...prev,
       rental: e.target.checked,
@@ -41,24 +67,23 @@ const AdminDashboard = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const { name, category, price, quantity, description, image, rental } = formData;
+const handleSubmit = async e => {
+  e.preventDefault();
+  const { name, category, price, quantity, description, image, rental } = formData;
 
-    if (!name || !category || !price || !description || !image || (!rental && !quantity)) {
-      toast.error("All fields are required.");
-      return;
-    }
+  if (!user || !user.email) {
+    toast.error("User not logged in.");
+    return;
+  }
 
-    const existingProducts = JSON.parse(localStorage.getItem(`products_${adminId}`)) || [];
-    const newProduct = {
-      id: Date.now(),
-      ...formData
-    };
+  if (!name || !category || !price || !description || !image || (!rental && !quantity)) {
+    toast.error("All fields are required.");
+    return;
+  }
+console.log("Submitting product:", { ...formData, admin: user.email });
 
-    const updatedProducts = [...existingProducts, newProduct];
-    localStorage.setItem(`products_${adminId}`, JSON.stringify(updatedProducts));
-    setProducts(updatedProducts);
+  try {
+    await addDoc(productsRef, { ...formData, admin: user.email });
     toast.success("Product added successfully!");
     setFormData({
       name: '',
@@ -69,14 +94,29 @@ const AdminDashboard = () => {
       image: '',
       rental: false
     });
-  };
+    fetchProducts();
+  } catch (error) {
+    toast.error("Error adding product.");
+    console.error("Firestore error:", error); // <— View error details in browser console
+  }
+};
+
 
   const handleEdit = (product) => {
-    setEditingId(product.id);
-    setEditData(product);
-  };
+  setEditingId(product.id);
+  setEditData({
+    name: product.name || '',
+    category: product.category || '',
+    price: product.price || '',
+    quantity: product.quantity || '',
+    image: product.image || '',
+    description: product.description || '',
+    rental: product.rental || false,
+  });
+};
 
-  const handleEditChange = (e) => {
+
+  const handleEditChange = e => {
     const { name, value, type, checked } = e.target;
     setEditData(prev => ({
       ...prev,
@@ -84,47 +124,46 @@ const AdminDashboard = () => {
     }));
   };
 
-  const handleUpdate = () => {
-    const updated = products.map(prod =>
-      prod.id === editingId ? editData : prod
-    );
-    setProducts(updated);
-    localStorage.setItem(`products_${adminId}`, JSON.stringify(updated));
-    setEditingId(null);
-    setEditData({});
+  const handleUpdate = async () => {
+    try {
+      const docRef = doc(db, 'products', editingId);
+      await updateDoc(docRef, editData);
+      toast.success("Product updated");
+      setEditingId(null);
+      setEditData({});
+      fetchProducts();
+    } catch (err) {
+      toast.error("Update failed");
+    }
   };
 
-  const handleCancelEdit = () => {
-    setEditingId(null);
-    setEditData({});
+  const handleDelete = async id => {
+    try {
+      const docRef = doc(db, 'products', id);
+      await deleteDoc(docRef);
+      toast.success("Deleted");
+      fetchProducts();
+    } catch (err) {
+      toast.error("Delete failed");
+    }
   };
 
-  const handleDelete = (id) => {
-    const filtered = products.filter(p => p.id !== id);
-    setProducts(filtered);
-    localStorage.setItem(`products_${adminId}`, JSON.stringify(filtered));
-  };
-
-  const totalEarnings = orders.reduce((sum, order) => sum + Number(order.price || 0), 0);
-  const totalOrders = orders.length;
-  const completedOrders = orders.filter(order => order.status === 'completed').length;
-  const pendingOrders = orders.filter(order => order.status !== 'completed').length;
-
+  const totalEarnings = orders.reduce((sum, o) => sum + Number(o.price || 0), 0);
+  const completedOrders = orders.filter(o => o.status === 'completed').length;
+  const pendingOrders = orders.length - completedOrders;
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="max-w-7xl mx-auto space-y-8">
         <div className="bg-white p-6 rounded-xl shadow">
-          <h1 className="text-3xl font-bold text-green-800">
-            Welcome, Admin
-          </h1>
+          <h1 className="text-3xl font-bold text-green-800">Welcome, Admin</h1>
         </div>
 
+        {/* Add Product Form */}
         <div className="bg-white p-6 rounded-xl shadow">
           <h2 className="text-2xl font-bold mb-4">Add New Product</h2>
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input type="text" name="name" placeholder="Product Name" className="border p-2 rounded" value={formData.name} onChange={handleChange} required />
-
-            <select name="category" className="border p-2 rounded" value={formData.category} onChange={handleChange} required>
+            <input type="text" name="name" placeholder="Product Name" value={formData.name} onChange={handleChange} className="border p-2 rounded" required />
+            <select name="category" value={formData.category} onChange={handleChange} className="border p-2 rounded" required>
               <option value="">Select Category</option>
               <optgroup label="Seeds">
                 <option value="Seeds - Organic">Organic Seeds</option>
@@ -150,64 +189,53 @@ const AdminDashboard = () => {
 
             {formData.category === 'Machinery' && (
               <div className="md:col-span-2 flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  name="rental"
-                  checked={formData.rental}
-                  onChange={handleCheckboxChange}
-                />
+                <input type="checkbox" name="rental" checked={formData.rental} onChange={handleCheckboxChange} />
                 <label className="text-sm text-gray-700">Available for Rent</label>
               </div>
             )}
 
-            <input type="number" name="price" placeholder={formData.rental ? "Rent per Day (Rs)" : "Price (Rs)"} className="border p-2 rounded" value={formData.price} onChange={handleChange} required />
+            <input type="number" name="price" placeholder={formData.rental ? "Rent per Day (₹)" : "Price (₹)"} value={formData.price} onChange={handleChange} className="border p-2 rounded" required />
 
             {!(formData.category === 'Machinery' && formData.rental) && (
-              <input type="number" name="quantity" placeholder="Quantity" className="border p-2 rounded" value={formData.quantity} onChange={handleChange} required />
+              <input type="number" name="quantity" placeholder="Quantity" value={formData.quantity} onChange={handleChange} className="border p-2 rounded" required />
             )}
 
-            <input type="url" name="image" placeholder="Image URL" className="border p-2 rounded" value={formData.image} onChange={handleChange} required />
-            <textarea name="description" placeholder="Description" className="border p-2 rounded md:col-span-2" rows="3" value={formData.description} onChange={handleChange} required></textarea>
-
-            <button type="submit" className="bg-green-600 text-white py-2 rounded hover:bg-green-700 md:col-span-2">
-              Add Product
-            </button>
+            <input type="url" name="image" placeholder="Image URL" value={formData.image} onChange={handleChange} className="border p-2 rounded" required />
+            <textarea name="description" placeholder="Description" value={formData.description} onChange={handleChange} className="border p-2 rounded md:col-span-2" rows="3" required />
+            <button type="submit" className="bg-green-600 text-white py-2 rounded hover:bg-green-700 md:col-span-2">Add Product</button>
           </form>
         </div>
 
+        {/* Products List */}
         <div className="bg-white p-6 rounded-xl shadow">
           <h2 className="text-2xl font-bold mb-4">Added Products</h2>
           {products.length === 0 ? (
             <p className="text-gray-600">No products added yet.</p>
           ) : (
             <div className="grid md:grid-cols-2 gap-6">
-              {products.map((product) => (
-                <div key={product.id} className="border p-4 rounded-lg flex flex-col md:flex-row gap-4 items-center">
+              {products.map(product => (
+                <div key={product.id} className="border p-4 rounded-lg flex flex-col md:flex-row gap-4 items-start">
                   <img src={product.image} alt={product.name} className="w-24 h-24 object-cover rounded" />
                   <div className="flex-1">
                     {editingId === product.id ? (
                       <div className="space-y-2">
-                        <input type="text" name="name" value={editData.name} onChange={handleEditChange} className="w-full border p-1 rounded" />
-                        <input type="text" name="category" value={editData.category} onChange={handleEditChange} className="w-full border p-1 rounded" />
+                        <input type="text" name="name" value={editData.name || ''} onChange={handleEditChange} className="w-full border p-1 rounded" />
+                        <input type="text" name="category" value={editData.category || ''} onChange={handleEditChange} className="w-full border p-1 rounded" />
 
                         {editData.category === 'Machinery' && (
                           <div className="flex items-center gap-2">
-                            <input
-                              type="checkbox"
-                              name="rental"
-                              checked={editData.rental}
-                              onChange={handleEditChange}
-                            />
+                            <input type="checkbox" name="rental" checked={editData.rental || false} onChange={handleEditChange} />
                             <label className="text-sm text-gray-700">Available for Rent</label>
                           </div>
                         )}
 
-                        <input type="number" name="price" value={editData.price} onChange={handleEditChange} className="w-full border p-1 rounded" />
+                        <input type="number" name="price" value={editData.price || ''} onChange={handleEditChange} className="w-full border p-1 rounded" />
                         {!(editData.category === 'Machinery' && editData.rental) && (
-                          <input type="number" name="quantity" value={editData.quantity} onChange={handleEditChange} className="w-full border p-1 rounded" />
+                          <input type="number" name="quantity" value={editData.quantity || ''} onChange={handleEditChange} className="w-full border p-1 rounded" />
                         )}
-                        <textarea name="description" value={editData.description} onChange={handleEditChange} className="w-full border p-1 rounded" />
-                        <input type="url" name="image" value={editData.image} onChange={handleEditChange} className="w-full border p-1 rounded" />
+                        <textarea name="description" value={editData.description || ''} onChange={handleEditChange} className="w-full border p-1 rounded" />
+                        <input type="url" name="image" value={editData.image || ''} onChange={handleEditChange} className="w-full border p-1 rounded" />
+
                         <div className="flex gap-2">
                           <button onClick={handleUpdate} className="bg-green-500 text-white px-3 py-1 rounded">Save</button>
                           <button onClick={handleCancelEdit} className="bg-gray-400 text-white px-3 py-1 rounded">Cancel</button>
@@ -235,10 +263,11 @@ const AdminDashboard = () => {
           )}
         </div>
 
+        {/* Order Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-white p-6 rounded-xl shadow">
             <h2 className="text-xl font-semibold mb-2">Total Orders</h2>
-            <p className="text-2xl font-bold text-green-700">{totalOrders}</p>
+            <p className="text-2xl font-bold text-green-700">{orders.length}</p>
           </div>
           <div className="bg-white p-6 rounded-xl shadow">
             <h2 className="text-xl font-semibold mb-2">Completed Orders</h2>
@@ -250,6 +279,7 @@ const AdminDashboard = () => {
           </div>
         </div>
 
+        {/* Earnings */}
         <div className="bg-white p-6 rounded-xl shadow text-right">
           <h2 className="text-2xl font-bold mb-2">Total Earnings</h2>
           <p className="text-3xl font-bold text-green-700">₹{totalEarnings}</p>
@@ -260,3 +290,6 @@ const AdminDashboard = () => {
 };
 
 export default AdminDashboard;
+
+
+ 
