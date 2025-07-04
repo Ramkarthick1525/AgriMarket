@@ -197,7 +197,7 @@ const Navbar = () => {
         </Link>
 
         <Link
-          to="/orders"
+          to="/Order"
           className="flex items-center px-4 py-2 text-gray-800 hover:bg-green-50 hover:text-green-800"
           onClick={() => setIsProfileOpen(false)}
         >

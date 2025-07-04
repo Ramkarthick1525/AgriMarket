@@ -16,6 +16,7 @@ import Contact from './pages/ContactUs'; // Assuming you have a Contact page
 import Profile from './pages/Profile'; // ⬅️ Add at top
 import CartPage from './pages/Cart'; // ⬅️ Add at top
 import WishlistPage from './pages/wishlist';
+import OrdersPage from './pages/Order';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
               <Route path="/profile" element={<Profile />} />
               <Route path="/cart" element={<CartPage />} />
               <Route path='/wishlist' element={<WishlistPage/>} />
+              <Route path='/Order' element={<OrdersPage/>} />
               
               
 
