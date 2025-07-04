@@ -232,7 +232,7 @@ console.log("Submitting product:", { ...formData, admin: user.email });
         </optgroup>
         <option value="Vegetables">Vegetables</option>
         <option value="Machinery">Machinery</option>
-        <option value="Diary">Diary</option>
+        <option value="Other Products">Other Products</option>
       </select>
     </div>
 

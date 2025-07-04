@@ -14,7 +14,7 @@ const categorySlugMap = {
   'fertilizers-organic': 'Fertilizers - Organic',
   'fertilizers-inorganic': 'Fertilizers - Inorganic',
   'machinery': 'Machinery',
-  'Diary': 'Diary',
+  'others': 'Other Products',
   'trees-fruit': 'Fruit Trees',
   'trees-ornamental': 'Ornamental Trees',
   'poultry-chick': 'Chick',
@@ -51,11 +51,7 @@ const categoryInfo = {
     description: 'Modern equipment to enhance productivity',
     bgColor: 'bg-blue-600'
   },
-  'Diary': {
-    title: 'Diary Items',
-    description: 'Fresh and healthy dairy products',
-    bgColor: 'bg-amber-600'
-  },
+ 
   'trees-fruit': {
     title: 'Fruit Trees',
     description: 'Grow your own fruits with our best tree varieties',
@@ -85,6 +81,11 @@ const categoryInfo = {
     title: 'vegetables',
     description: 'Farm-fresh vegetables and their seeds delivered to your door',
     bgColor: 'bg-orange-500'
+  },
+   'others': {
+    title: 'Other Products',
+    description: 'Miscellaneous agricultural products and supplies',
+    bgColor: 'bg-amber-600'
   }
 };
 

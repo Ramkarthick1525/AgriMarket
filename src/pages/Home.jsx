@@ -36,10 +36,10 @@ const Home = () => {
     },
     
     {
-      name: 'Diary',
-      path: '/category/Diary',
+      name: 'In-organic Seeds',
+      path: '/category/seeds-inorganic',
       description: 'Fresh and healthy dairy products ',
-      image: 'https://i.pinimg.com/736x/c2/a5/03/c2a5035df9bad2990471306b6d1a2a4f.jpg',
+      image: 'https://media.istockphoto.com/id/2167130298/photo/close-up-hands-hold-mixed-chemical-fertilizer-concept-chemical-fertilizer-production-use-in.jpg?s=612x612&w=0&k=20&c=DCNYzPUjA6JCbEoPeYcVY7Qxg2D1CoSuMF2tX_Ssic8=',
       bgColor: 'bg-amber-100',
       textColor: 'text-amber-800'
     }

@@ -75,8 +75,8 @@ const Navbar = () => {
     ]
   },
   { name: 'Machinery', path: '/category/machinery' },
-  { name: 'Dairy', path: '/category/Diary' },
-  { name: 'Vegetables', path: '/category/vegetables'}
+  { name: 'Vegetables', path: '/category/vegetables'},
+  { name: 'Other Products', path: '/category/others' }
 ];
 
 
@@ -84,18 +84,13 @@ const Navbar = () => {
     <nav className="bg-green-800 shadow-lg sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo (shown to all) */}
-<Link to={isAdmin ? "/admin" : "/"} className="flex items-center space-x-2">
-  <img
-    src="src/assets/logo.jpg" // or wherever your logo is located, e.g., /assets/logo.png
-    
-    className="h-8 w-8 object-contain"
-  />
-  <span className="text-white text-xl font-bold">
-    Farm Produce Hub
-  </span>
-</Link>
-
+          
+          <Link to={isAdmin ? "/admin" : "/"} className="flex items-center space-x-2">
+            <Sprout className="h-8 w-8" color="#a3e635" /> {/* Changed icon color */}
+            <span className="text-white text-xl font-bold">
+              Farm Produce Hub
+            </span>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
