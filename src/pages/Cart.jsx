@@ -24,7 +24,9 @@ const CartPage = () => {
   const [name, setName] = useState('');
   const [address, setAddress] = useState('');
   const [mobile, setMobile] = useState('');
-  const [paymentMethod] = useState('Cash on Delivery');
+  
+  const [paymentMethod, setPaymentMethod] = useState('Cash on Delivery');
+
 
   const cartRef = user ? doc(db, 'carts', user.email) : null;
 
@@ -46,6 +48,64 @@ const CartPage = () => {
 
     fetchCart();
   }, [user]);
+const handleOnlinePayment = async () => {
+  if (!name || !address || !mobile) {
+    toast.error('Please fill all the fields');
+    return;
+  }
+
+  const options = {
+    key: 'rzp_test_W7K9sRnfiGT25L', // replace with your Razorpay test key
+    amount: total * 100, // Razorpay uses paise
+    currency: 'INR',
+    name: 'Farm Produce Hub',
+    description: 'Purchase from Farm Produce Hub',
+    image: 'assets/logo.jpg', // optional
+    handler: async function (response) {
+      // Payment successful — create order in Firestore
+      try {
+        const order = {
+          userEmail: user.email,
+          name,
+          address,
+          mobile,
+          paymentMethod: 'Online Payment',
+          items: cartItems,
+          total,
+          placedAt: serverTimestamp(),
+          status: 'Pending',
+          razorpay_payment_id: response.razorpay_payment_id,
+          admin: 'tamilvaanan2004@gmail.com'
+        };
+
+        await addDoc(collection(db, 'orders'), order);
+        await setDoc(cartRef, { items: [] });
+        setCartItems([]);
+        setShowForm(false);
+        setName('');
+        setAddress('');
+        setMobile('');
+
+        toast.success('Payment successful & order placed!');
+      } catch (err) {
+        console.error('Error placing order:', err);
+        toast.error('Order creation failed after payment.');
+      }
+    },
+    prefill: {
+      name,
+      email: user.email,
+      contact: mobile
+    },
+    theme: {
+      color: '#22c55e'
+    }
+  };
+
+  const rzp = new window.Razorpay(options);
+  rzp.open();
+};
+
 
   const updateCartInDB = async (updatedItems) => {
     if (!user) return;
@@ -85,8 +145,13 @@ const CartPage = () => {
     toast.error('Please fill all the fields');
     return;
   }
+if (paymentMethod === 'Online Payment') {
+  handleOnlinePayment();
+  return;
+}
+setPlacingOrder(true);
 
-  setPlacingOrder(true);
+  
 
   try {
     const order = {
@@ -232,7 +297,32 @@ const CartPage = () => {
                   onChange={(e) => setAddress(e.target.value)}
                   className="w-full p-2 border rounded"
                 />
-                <p className="text-sm font-medium">Payment Method: Cash on Delivery</p>
+                <div className="flex flex-col gap-2">
+  <label className="text-sm font-medium">Select Payment Method</label>
+  <div className="flex gap-4">
+    <label className="flex items-center gap-1">
+      <input
+        type="radio"
+        name="payment"
+        value="Cash on Delivery"
+        checked={paymentMethod === 'Cash on Delivery'}
+        onChange={(e) => setPaymentMethod(e.target.value)}
+      />
+      Cash on Delivery
+    </label>
+    <label className="flex items-center gap-1">
+      <input
+        type="radio"
+        name="payment"
+        value="Online Payment"
+        checked={paymentMethod === 'Online Payment'}
+        onChange={(e) => setPaymentMethod(e.target.value)}
+      />
+      Online Payment
+    </label>
+  </div>
+</div>
+
                 <div className="flex justify-end">
                   <button
                     type="submit"
