@@ -198,14 +198,8 @@ const AdminDashboard = () => {
                 <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Name" className="border p-2 rounded" />
                 <select name="category" value={formData.category} onChange={handleChange} className="border p-2 rounded">
                   <option value="">Select Category</option>
-                  <optgroup label="Seeds">
-                    <option value="Seeds - Organic">Organic Seeds</option>
-                    <option value="Seeds - Inorganic">Inorganic Seeds</option>
-                  </optgroup>
-                  <optgroup label="Fertilizers">
-                    <option value="Fertilizers - Organic">Organic Fertilizers</option>
-                    <option value="Fertilizers - Inorganic">Inorganic Fertilizers</option>
-                  </optgroup>
+                 <option value="Seeds"> Seeds</option>
+                    <option value="Fertilizers"> Fertilizers</option>
                   <optgroup label="Trees">
                     <option value="Fruit Trees">Fruit Trees</option>
                     <option value="Ornamental Trees">Ornamental Trees</option>

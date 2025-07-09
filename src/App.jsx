@@ -17,6 +17,10 @@ import Profile from './pages/Profile'; // ⬅️ Add at top
 import CartPage from './pages/Cart'; // ⬅️ Add at top
 import WishlistPage from './pages/wishlist';
 import OrdersPage from './pages/Order';
+import QRCodePage from './pages/QRCodePage';
+
+
+
 
 function App() {
   return (
@@ -38,6 +42,7 @@ function App() {
               <Route path="/cart" element={<CartPage />} />
               <Route path='/wishlist' element={<WishlistPage/>} />
               <Route path='/Order' element={<OrdersPage/>} />
+              <Route path="/qr" element={<QRCodePage />} />
               
               
 

@@ -45,20 +45,10 @@ const Navbar = () => {
   };
 
   const categories = [
-  {
-    name: 'Seeds',
-    subcategories: [
-      { name: 'Organic Seeds', path: '/category/seeds-organic' },
-      { name: 'Inorganic Seeds', path: '/category/seeds-inorganic' }
-    ]
-  },
-  {
-    name: 'Fertilizers',
-    subcategories: [
-      { name: 'Organic Fertilizers', path: '/category/fertilizers-organic' },
-      { name: 'Inorganic Fertilizers', path: '/category/fertilizers-inorganic' }
-    ]
-  },
+  
+    
+      { name: 'Seeds', path: '/category/seeds' },
+      { name: ' Fertilizers', path: '/category/fertilizers' },
   {
     name: 'Trees',
     subcategories: [

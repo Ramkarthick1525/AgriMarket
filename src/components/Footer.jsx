@@ -14,7 +14,8 @@ const Footer = () => {
             </div>
             <p className="text-green-200 mb-4">
               Your trusted partner for all agricultural needs. Quality products, 
-              competitive prices, and reliable service
+              competitive prices, and reliable service. <br />
+              
             </p>
           </div>
 
@@ -22,14 +23,12 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
-              <li><a href="/" className="text-green-200 hover:text-white transition-colors">Home</a></li>
-              <li><a href="/category/seeds-organic" className="text-green-200 hover:text-white transition-colors">Organic seeds</a></li>
-              <li><a href="/category/vegetables" className="text-green-200 hover:text-white transition-colors">Vegetables</a></li>
-              <li><a href="/category/seeds-inorganic" className="text-green-200 hover:text-white transition-colors">In-Organic seeds</a></li>
-              <li><a href="/category/fertilizers-organic" className="text-green-200 hover:text-white transition-colors">Organic Fertilizers </a></li>
-              <li><a href="/category/machinery" className="text-green-200 hover:text-white transition-colors">Machinery</a></li>
-              
-
+              <li><a href="/" className="text-green-200 hover:text-white">Home</a></li>
+              <li><a href="/category/seeds" className="text-green-200 hover:text-white">Seeds</a></li>
+              <li><a href="/category/vegetables" className="text-green-200 hover:text-white">Vegetables</a></li>
+              <li><a href="/category/fertilizers" className="text-green-200 hover:text-white">Fertilizers</a></li>
+              <li><a href="/category/machinery" className="text-green-200 hover:text-white">Machinery</a></li>
+              <li><a href="/category/others" className="text-green-200 hover:text-white">Other Products</a></li>
             </ul>
           </div>
 
@@ -37,10 +36,10 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4">Customer Service</h3>
             <ul className="space-y-2">
-              <li><a href="/contact" className="text-green-200 hover:text-white transition-colors">Contact Us</a></li>
-              <li><a href="/shipping" className="text-green-200 hover:text-white transition-colors">Shipping Info</a></li>
-              <li><a href="/returns" className="text-green-200 hover:text-white transition-colors">Returns Policy</a></li>
-              <li><a href="/faq" className="text-green-200 hover:text-white transition-colors">FAQ</a></li>
+              <li><a href="/contact" className="text-green-200 hover:text-white">Contact Us</a></li>
+              <li><a href="/shipping" className="text-green-200 hover:text-white">Shipping Info</a></li>
+              <li><a href="/returns" className="text-green-200 hover:text-white">Returns Policy</a></li>
+              <li><a href="/faq" className="text-green-200 hover:text-white">FAQ</a></li>
             </ul>
           </div>
 
@@ -56,20 +55,49 @@ const Footer = () => {
                 <Mail className="h-4 w-4 text-green-300" />
                 <span className="text-green-200">farmproducehub05@gmail.com</span>
               </div>
-              <div className="flex items-center space-x-2">
-                <MapPin className="h-4 w-4 text-green-300" />
-                <span className="text-green-200">Farm Produce Hub,
-                Harur,Dharmapuri,Tamilnadu <br />
-                India</span>
+              <div className="flex items-start space-x-2">
+                <MapPin className="h-6 w-6 text-green-300" />
+                <span className="text-green-200">
+                  JSA College of Agriculture and Technology,<br />
+                  Avatti Tittakudi - Kanakkampadi Rd, Avatti, Tamil Nadu 606108
+                </span>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="border-t border-green-800 mt-8 pt-8 text-center">
+        {/* Divider */}
+        <div className="border-t border-green-800 mt-8 pt-6 text-center">
           <p className="text-green-200">
             © 2024 Farm Produce Hub. All rights reserved. | Built for agricultural excellence.
           </p>
+
+          {/* Team Credits */}
+          <div className="mt-4 text-green-300 text-sm">
+            <span className="font-semibold"> Authorized By:</span> <br />
+            <br /> Dr.V.Lakshmanan |
+Dr.S.Velprabakaran |
+Mr.S.Senthil Murugan.
+<br />
+<br />
+
+
+Tamilvaanan T |
+Senthamil R |
+Ram karthick P |
+Sudharshan R |
+Sowmya S |
+Subrapratha R |
+Sudhirsha M V |
+Susmitha N 
+<br />
+<br />
+<span className="font-semibold"> Founder :</span>
+<br />
+<br />
+JSA College of Agriculture and Technology
+
+          </div>
         </div>
       </div>
     </footer>

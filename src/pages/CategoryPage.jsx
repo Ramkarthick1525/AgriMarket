@@ -9,10 +9,8 @@ import { collection, getDocs, query, where } from 'firebase/firestore';
 
 // Mapping from URL slug to actual category name stored by admin
 const categorySlugMap = {
-  'seeds-organic': 'Seeds - Organic',
-  'seeds-inorganic': 'Seeds - Inorganic',
-  'fertilizers-organic': 'Fertilizers - Organic',
-  'fertilizers-inorganic': 'Fertilizers - Inorganic',
+  'seeds': 'Seeds',
+  'fertilizers': 'Fertilizers',
   'machinery': 'Machinery',
   'others': 'Other Products',
   'trees-fruit': 'Fruit Trees',
@@ -26,26 +24,18 @@ const categorySlugMap = {
 
 // Header info for each category
 const categoryInfo = {
-  'seeds-organic': {
-    title: 'Organic Seeds',
+  'seeds': {
+    title: ' Seeds',
     description: 'Naturally sourced seeds for healthier crops',
     bgColor: 'bg-lime-600'
   },
-  'seeds-inorganic': {
-    title: 'Inorganic Seeds',
-    description: 'Scientifically improved seeds for better yield',
-    bgColor: 'bg-lime-800'
-  },
-  'fertilizers-organic': {
-    title: 'Organic Fertilizers',
+  
+  'fertilizers': {
+    title: ' Fertilizers',
     description: 'Eco-friendly fertilizers for sustainable farming',
     bgColor: 'bg-green-600'
   },
-  'fertilizers-inorganic': {
-    title: 'Inorganic Fertilizers',
-    description: 'Boost crop productivity with chemical fertilizers',
-    bgColor: 'bg-green-800'
-  },
+  
   'machinery': {
     title: 'Agricultural Machinery',
     description: 'Modern equipment to enhance productivity',

@@ -11,8 +11,8 @@ const Home = () => {
 
   const categories = [
     {
-      name: 'Organic seeds',
-      path: '/category/seeds-organic',
+      name: ' Seeds',
+      path: '/category/seeds',
       description: 'High-quality seeds and organic fertilizers for better yields',
       image: 'https://cdn.pixabay.com/photo/2015/05/14/02/22/soil-766281_1280.jpg',
       bgColor: 'bg-green-100',
@@ -27,22 +27,67 @@ const Home = () => {
       textColor: 'text-orange-800'
     },
     {
-      name: ' Machinery',
-      path: '/category/machinery',
-      description: 'Modern farming equipment and tools for efficient agriculture',
-      image: 'https://i.pinimg.com/736x/15/30/b9/1530b944fe11198892b63ab5fe9371be.jpg',
+      name: ' Fruit Trees',
+      path: '/category/trees-fruit',
+      description: 'Grow your own fruits with our best tree varieties',
+      image: 'https://images.unsplash.com/photo-1597714026720-8f74c62310ba?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       bgColor: 'bg-blue-100',
       textColor: 'text-blue-800'
     },
     
     {
-      name: 'In-organic Seeds',
-      path: '/category/seeds-inorganic',
-      description: 'Fresh and healthy dairy products ',
+      name: 'Ornamental Trees',
+      path: '/category/trees-ornamental',
+      description: 'Beautify farms and gardens with ornamental trees ',
+      image: 'https://i.pinimg.com/736x/b6/0a/1d/b60a1dc67b1ad71385f071b9e07112e6.jpg',
+      bgColor: 'bg-sky-100',
+      textColor: 'text-sky-800'
+    },
+
+    {
+      name: 'Fertilizers',
+      path: '/category/fertilizers',
+      description: 'Eco-friendly fertilizers for sustainable farming ',
       image: 'https://media.istockphoto.com/id/2167130298/photo/close-up-hands-hold-mixed-chemical-fertilizer-concept-chemical-fertilizer-production-use-in.jpg?s=612x612&w=0&k=20&c=DCNYzPUjA6JCbEoPeYcVY7Qxg2D1CoSuMF2tX_Ssic8=',
+      bgColor: 'bg-gray-100',
+      textColor: 'text-gray-800'
+    },
+
+    {
+      name: 'Chick',
+      path: '/category/poultry-chick',
+      description: ' Supplies and feed for chick farming',
+      image: 'https://images.unsplash.com/photo-1546272989-40c92939c6c2?q=80&w=1582&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       bgColor: 'bg-amber-100',
       textColor: 'text-amber-800'
-    }
+    },
+    {
+      name: 'Duck',
+      path: '/category/poultry-duck',
+      description: 'All you need for duck rearing ',
+      image: 'https://images.unsplash.com/photo-1535351221729-a95caae13678?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      bgColor: 'bg-purple-100',
+      textColor: 'text-purple-800'
+    },
+    {
+      name: 'Turkey',
+      path: '/category/poultry-turkey',
+      description: 'Top-quality turkeys and accessories ',
+      image: 'https://images.unsplash.com/photo-1610847188112-fda7a87b39a3?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      bgColor: 'bg-red-100',
+      textColor: 'text-red-800'
+    },
+
+    {
+      name: 'Other Products',
+      path: '/category/others',
+      description: 'Miscellaneous agricultural products and supplies ',
+      image: 'https://images.unsplash.com/photo-1560493676-04071c5f467b?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      bgColor: 'bg-yellow-100',
+      textColor: 'text-yellow-800'
+    },
+    
+    
   ];
 
   const features = [
@@ -111,7 +156,7 @@ const Home = () => {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {categories.map((category, index) => (
               <Link
                 key={index}

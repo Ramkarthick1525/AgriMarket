@@ -14,9 +14,9 @@ const ContactUs = () => {
       {/* Contact Info */}
       <div className="space-y-6 text-gray-700">
         <div>
-          <h3 className="text-xl font-semibold text-green-700">📍 Address</h3>
-          <p>Farm Produce Hub<br />Harur,Dharmapuri,Tamilnadu <br />
-                India</p>
+          <h3 className="text-xl font-semibold text-green-700">   🏠 Address</h3>
+          <p>JSA college of Agriculture and Technology,<br />
+Avatti Tittakudi - Kanakkampadi Rd, Avatti,<br /> Tamil Nadu 606108</p>
         </div>
         <div>
           <h3 className="text-xl font-semibold text-green-700">📞 Phone</h3>
