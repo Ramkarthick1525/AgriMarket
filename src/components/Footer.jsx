@@ -25,7 +25,6 @@ const Footer = () => {
             <ul className="space-y-2">
               <li><a href="/" className="text-green-200 hover:text-white">Home</a></li>
               <li><a href="/category/seeds" className="text-green-200 hover:text-white">Seeds</a></li>
-              <li><a href="/category/vegetables" className="text-green-200 hover:text-white">Vegetables</a></li>
               <li><a href="/category/fertilizers" className="text-green-200 hover:text-white">Fertilizers</a></li>
               <li><a href="/category/machinery" className="text-green-200 hover:text-white">Machinery</a></li>
               <li><a href="/category/others" className="text-green-200 hover:text-white">Other Products</a></li>

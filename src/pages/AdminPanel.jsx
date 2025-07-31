@@ -209,7 +209,7 @@ const AdminDashboard = () => {
                     <option value="Duck">Duck</option>
                     <option value="Turkey">Turkey</option>
                   </optgroup>
-                  <option value="Vegetables">Vegetables</option>
+                  
                   <option value="Machinery">Machinery</option>
                   <option value="Other Products">Other Products</option>
                 </select>

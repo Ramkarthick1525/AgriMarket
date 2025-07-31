@@ -65,7 +65,6 @@ const Navbar = () => {
     ]
   },
   { name: 'Machinery', path: '/category/machinery' },
-  { name: 'Vegetables', path: '/category/vegetables'},
   { name: 'Other Products', path: '/category/others' }
 ];
 

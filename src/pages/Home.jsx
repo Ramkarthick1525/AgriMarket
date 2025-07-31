@@ -19,10 +19,10 @@ const Home = () => {
       textColor: 'text-green-800'
     },
     {
-      name: 'Vegetables',
-      path: '/category/vegetables',
-      description: 'Farm-fresh vegetables and their seeds  delivered to your door',
-      image: 'https://static.toiimg.com/thumb/msid-121897288,width-1280,height-720,resizemode-4/121897288.jpg',
+      name: 'Machinery',
+      path: '/category/machinery',
+      description: ' wide range of agricultural and industrial machinery designed to boost productivity and efficiency',
+      image: 'https://farm.ws/wp-content/uploads/2021/05/devenish-5011634_640.jpg',
       bgColor: 'bg-orange-100',
       textColor: 'text-orange-800'
     },
